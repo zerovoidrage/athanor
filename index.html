@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ATNR</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #preloader-text {
+      font-family: 'ATNR-UI', sans-serif;
+      font-size: 1rem;
+      color: #333;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #preloader-text::after {
+      content: "Welcome to ATNR metaserve";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      color: #fff;
+      overflow: hidden;
+      animation: fillText 2s ease-in-out forwards;
+    }
+
+    @keyframes fillText {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+
+    #main-content {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #main-content.visible {
+      opacity: 1;
+    }
+
+    #cardControls {
+      position: fixed;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 10000;
+    }
+    #cardControls button {
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    #cardControls button:hover {
+      background: #000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+<div id="preloader">
+  <div id="preloader-text">Welcome to ATNR metaverse</div>
+</div>
+
+<div id="main-content">
+<div id="header">
+  <div class="header-left">
+    <div class="header-logo" id="mainLogo">
+      <img src="img/sphere3.gif" alt="Logo">
+    </div>
+    <span class="headline-2">explore</span>
+  </div>
+  <div class="header-right">
+    <div class="header-add">
+      <img src="img/icons/add.svg" alt="Add">
+    </div>
+    <div class="header-profile" id="profileAvatar">
+      <img src="img/avatar.png" alt="Profile">
+    </div>
+    <div class="profile-dropdown" id="profileDropdown" style="display:none;">
+      <div class="profile-dropdown__user">
+        <span class="subheadline-1">bogdvncollins</span>
+      </div>
+      <div class="profile-dropdown__list">
+        <div class="profile-dropdown__item">
+          <img src="img/icons/profile.svg" alt="Profile">
+          <span class="callout-1">Profile</span>
+        </div>
+        <div class="profile-dropdown__item" id="launchpadMenuItem">
+          <img src="img/icons/compass.svg" alt="Launchpad">
+          <span class="callout-1">Launchpad</span>
+        </div>
+        <div class="profile-dropdown__item">
+          <img src="img/icons/wallet.svg" alt="Wallet">
+          <span class="callout-1">Wallet</span>
+        </div>
+        <div class="profile-dropdown__divider"></div>
+        <div class="profile-dropdown__item profile-dropdown__item--external">
+          <span class="callout-1">Knowledge base</span>
+          <img src="img/icons/arrow-up-right.svg" alt="Open" class="external-icon">
+        </div>
+        <div class="profile-dropdown__item profile-dropdown__item--external">
+          <span class="callout-1">Twitter</span>
+          <img src="img/icons/arrow-up-right.svg" alt="Open" class="external-icon">
+        </div>
+      </div>
+      <div class="profile-dropdown__footer">
+        <a class="callout-2" href="#">Privacy</a>
+        <a class="callout-2" href="#">Copyrights</a>
+        <a class="callout-2" href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="filterBar">
+  <button class="tabButton active" data-category="all">All Sectors</button>
+  <button class="tabButton" data-category="AI">AI</button>
+  <button class="tabButton" data-category="DeFi">DeFi</button>
+  <button class="tabButton" data-category="Gaming">Gaming</button>
+  <button class="tabButton" data-category="Other">Other</button>
+</div>
+<div class="infoPanel" id="infoPanel">
+  <div class="info-header-area">
+    <div class="info-header-left">
+      <img src="img/icon.png" alt="" srcset="">
+      <div class="score-circle-container">
+        <svg class="score-circle" width="44" height="44" viewBox="0 0 44 44">
+          <circle class="circle-background" cx="22" cy="22" r="20"></circle>
+          <circle class="circle-progress" cx="22" cy="22" r="20"></circle>
+        </svg>
+        <span id="scoreNumber" class="score-number"></span>
+        <div class="score-tooltip">AI scoring from Geemseeker model, reflecting project confidence/risks and stability</div>
+      </div>
+      
+      
+    </div>
+    <div class="info-header-right">
+      
+      <div class="info-title-score-row">
+        <span class="headline-1" id="projectTitle">Project</span>
+        <!-- Score circle and number -->
+      </div>
+      <!-- Ensure no score label here -->
+    </div>
+  </div>
+  <p id="projectCategory">Category</p>
+  <p id="projectFunds">Raised: </p>
+  <p id="projectDays">Days Left: </p>
+  <div class="buttons">
+    <button>open</button>
+    <button id="closeBtn" class="close-button">close</button>
+  </div>
+</div>
+<div class="card-number-style">1</div>
+  <!-- Кнопки управления -->
+  <div id="cardControls">
+    <button id="spawnBtn" class="primary-button">spawn</button>
+    <button id="killBtn" class="primary-button">kill</button>
+  </div>
+</div>
+<div class="project-modal" id="projectModal">
+  <div class="preloader"></div>
+  <div class="modal-content">
+    <div class="modal-close" id="modalClose"></div>
+    <div class="project-header">
+      <div class="project-icon">
+        <img src="" alt="Project Icon" id="modalProjectIcon">
+      </div>
+      <div class="project-info">
+        <h2 id="modalProjectTitle">Project Name</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.152.2/build/three.module.js';
+
+  let scene = new THREE.Scene();
+  let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+  let renderer = new THREE.WebGLRenderer({ 
+    antialias: true,
+    powerPreference: "high-performance"
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  document.body.appendChild(renderer.domElement);
+
+  camera.position.z = 10;
+
+  const closeBtn = document.getElementById("closeBtn");
+  const infoPanel = document.getElementById("infoPanel");
+  const projectTitle = document.getElementById("projectTitle");
+  const projectCategory = document.getElementById("projectCategory");
+  const projectFunds = document.getElementById("projectFunds");
+  const projectDays = document.getElementById("projectDays");
+
+  const cards = [];
+  const minCards = 1;
+  const maxCards = 9;
+  let zoomTarget = null;
+  let isZoomed = false;
+  let zoomOutLerp = false;
+  let pendingCategory = null;
+  let parallax = new THREE.Vector2();
+  let cameraLerpTarget = new THREE.Vector3(0, 0, 10);
+  let isMouseOverUI = false;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const planeGeo = new THREE.PlaneGeometry(2, 2.5);
+  const categories = [
+    'AI', 'AI',
+    'DeFi', 'DeFi', 'DeFi',
+    'Gaming',
+    'Other', 'Other', 'Other'
+  ];
+  const projectNames = [
+    'neuralverse', 'visionai',
+    'cryptoflex', 'blockchain', 'smartcontract',
+    'gamehub',
+    'quantumforge', 'datasphere', 'omnibase'
+  ];
+
+  // Add text loader
+  const textLoader = new THREE.TextureLoader();
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = 1024;
+  canvas.height = 256;
+
+  // Ensure Inter font is loaded
+  const font = new FontFace('Inter', 'url(https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap)');
+  font.load().then(() => {
+    document.fonts.add(font);
+  });
+
+  function createTextTexture(text) {
+    // Create a new canvas for each texture to avoid sharing
+    const textureCanvas = document.createElement('canvas');
+    const textureContext = textureCanvas.getContext('2d');
+    textureCanvas.width = 1024;
+    textureCanvas.height = 256;
+
+    textureContext.clearRect(0, 0, textureCanvas.width, textureCanvas.height);
+    textureContext.fillStyle = 'white';
+    textureContext.font = '300 72px "Inter", sans-serif';  // Added fallback font
+    textureContext.textAlign = 'center';
+    textureContext.textBaseline = 'middle';
+    textureContext.fillText(text, textureCanvas.width / 2, textureCanvas.height / 2);
+    
+    const texture = new THREE.CanvasTexture(textureCanvas);
+    texture.anisotropy = 16;
+    texture.needsUpdate = true;
+    return texture;
+  }
+
+  // --- Новый блок: шаблоны координат для 1-9 карточек ---
+  const gridPatterns = {
+    1: [[0.5, 0.5]],
+    2: [[0.25, 0.5], [0.75, 0.5]],
+    3: [[0.166, 0.5], [0.5, 0.5], [0.834, 0.5]],
+    4: [[0.18, 0.82], [0.82, 0.82], [0.18, 0.18], [0.82, 0.18]],
+    5: [[0.18, 0.82], [0.82, 0.82], [0.5, 0.5], [0.18, 0.18], [0.82, 0.18]],
+    6: [[0.18, 0.82], [0.5, 0.82], [0.82, 0.82], [0.18, 0.18], [0.5, 0.18], [0.82, 0.18]],
+    7: [
+      [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+      [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
+      [0.5, 1.0]
+    ],
+    8: [
+      [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+      [0.3, 0.5], [0.7, 0.5],
+      [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
+    ],
+    9: [
+      [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
+      [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
+      [0.0, 1.0], [0.5, 1.0], [1.0, 1.0],
+    ]
+  };
+
+  // --- Обновлённая функция для получения позиции карточки ---
+  function getGridPosition(index, totalItems) {
+    const pattern = gridPatterns[totalItems] || gridPatterns[9];
+    const [normX, normY] = pattern[index];
+    const chaosFactor = 0.07;
+    const dx = (Math.random() - 0.5) * chaosFactor;
+    const dy = (Math.random() - 0.5) * chaosFactor;
+    const finalX = (normX + dx - 0.5) * window.innerWidth / 100;
+    const finalY = (0.5 - normY - dy) * window.innerHeight / 100;
+    const finalZ = (Math.random() - 0.5) * 2;
+    return [finalX, finalY, finalZ];
+  }
+
+  // --- Инициализация карточек (создаём только одну по умолчанию) ---
+  function createCardGroup(i) {
+    const cardGroup = new THREE.Group();
+    const projectName = projectNames[i % projectNames.length];
+    cardGroup.userData.category = categories[i % categories.length];
+    cardGroup.userData.name = projectName;
+    cardGroup.userData.raised = `$${(Math.random() * 100).toFixed(2)}k`;
+    cardGroup.userData.days = Math.floor(Math.random() * 30 + 1);
+    cardGroup.userData.iconIndex = (i % 9) + 1;
+    cardGroup.userData.gsScore = Math.floor(Math.random() * 51) + 50;
+
+    // Create text mesh for project name
+    const textTexture = createTextTexture(projectName);
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: textTexture,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+    const textGeometry = new THREE.PlaneGeometry(2, 0.4);
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    textMesh.position.set(0, -0.8, 0.01);
+    cardGroup.add(textMesh);
+
+    const frontMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const backMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+
+    const front = new THREE.Mesh(planeGeo, frontMat);
+    const back = new THREE.Mesh(planeGeo, backMat);
+    back.rotation.y = Math.PI;
+
+    // Create icon texture with error handling
+    const textureLoader = new THREE.TextureLoader();
+    const iconPath = `img/icon${(i % 9) + 1}.jpg`;
+    textureLoader.load(
+      iconPath,
+      (texture) => {
+        texture.anisotropy = 16;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.encoding = THREE.sRGBEncoding;
+        const iconMat = new THREE.MeshBasicMaterial({ 
+          map: texture, 
+          transparent: true,
+          side: THREE.DoubleSide
+        });
+        const iconMesh = new THREE.Mesh(
+          new THREE.PlaneGeometry(0.80, 0.80),
+          iconMat
+        );
+        iconMesh.position.set(0, 0.3, 0.01);
+        cardGroup.add(iconMesh);
+      },
+      undefined,
+      (error) => {
+        console.error('Error loading icon:', iconPath, error);
+      }
+    );
+
+    const overlayMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
+    const overlayMesh = new THREE.Mesh(planeGeo, overlayMat);
+    overlayMesh.position.set(0, 0, 0.02);
+    cardGroup.add(front);
+    cardGroup.add(back);
+    cardGroup.add(overlayMesh);
+    cardGroup.userData.overlayMesh = overlayMesh;
+
+    return cardGroup;
+  }
+
+  // --- Управление карточками ---
+  // cards = [] уже объявлен выше
+  // cardCount = 9 по умолчанию, но теперь будем использовать cards.length
+  // Изначально только одна карточка
+  cards.length = 0;
+  const firstCard = createCardGroup(0);
+  group.add(firstCard);
+  cards.push(firstCard);
+  updateCards();
+
+  // --- Кнопки управления ---
+  document.getElementById('spawnBtn').addEventListener('click', () => {
+    if (cards.length < maxCards) {
+      const newCard = createCardGroup(cards.length);
+      group.add(newCard);
+      cards.push(newCard);
+      updateCards();
+    }
+  });
+  document.getElementById('killBtn').addEventListener('click', () => {
+    if (cards.length > minCards) {
+      const card = cards.pop();
+      group.remove(card);
+      updateCards();
+    }
+  });
+
+  // --- Обновлённая функция updateCards ---
+  function updateCards() {
+    for (let i = 0; i < cards.length; i++) {
+      const [x, y, z] = getGridPosition(i, cards.length);
+      gsap.to(cards[i].position, {
+        x, y, z,
+        duration: 0.5,
+        ease: 'power2.out'
+      });
+    }
+  }
+
+  // --- При ресайзе ---
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    updateCards();
+
+    // If currently zoomed, update zoom target position
+    if (isZoomed && zoomTarget) {
+      const targetCardIndex = cards.indexOf(zoomTarget);
+      if(targetCardIndex !== -1) {
+        const [x, y, z] = getGridPosition(targetCardIndex, cards.length);
+        cameraLerpTarget.copy(new THREE.Vector3(x, y, z + 2.5));
+      }
+    }
+  });
+
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  function getCardGroupFromObject(object) {
+    while (object && !cards.includes(object)) {
+      object = object.parent;
+    }
+    return object;
+  }
+
+  window.addEventListener("mousemove", event => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    parallax.x = (event.clientX / window.innerWidth - 0.5) * 2;
+    parallax.y = -(event.clientY / window.innerHeight - 0.5) * 2;
+
+    // Check if mouse is over any UI element
+    const uiElements = [document.getElementById('header'), document.getElementById('filterBar'), document.getElementById('infoPanel')];
+    isMouseOverUI = uiElements.some(element => element && element.contains(event.target));
+
+    // If mouse is over UI, set cursor to default and skip Three.js hover effects
+    if (isMouseOverUI) {
+        renderer.domElement.style.cursor = 'default';
+        cards.forEach(card => {
+            card.scale.set(1, 1, 1);
+            if (card.userData.overlayMesh) {
+              card.userData.overlayMesh.material.opacity = 0;
+            }
+        });
+        return; // Stop further processing for Three.js hover
+    }
+
+    // If not over UI, proceed with Three.js raycasting for hover effects
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    cards.forEach(card => {
+      const isHovered = intersects.find(i => getCardGroupFromObject(i.object) === card);
+      if (isHovered) {
+        card.scale.set(1.05, 1.05, 1);
+        renderer.domElement.style.cursor = 'pointer';
+        if (card.userData.overlayMesh) {
+          card.userData.overlayMesh.material.opacity = 0.1;
+        }
+      } else {
+        card.scale.set(1, 1, 1);
+        if (card.userData.overlayMesh) {
+          card.userData.overlayMesh.material.opacity = 0;
+        }
+      }
+    });
+    if (intersects.length === 0) {
+        renderer.domElement.style.cursor = 'default';
+    }
+  });
+
+  window.addEventListener("click", event => {
+    event.preventDefault();
+    
+    // If mouse was over a UI element during the click, prevent Three.js interaction
+    if (isMouseOverUI) {
+        return;
+    }
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children, true);
+
+    if (intersects.length > 0) {
+      const clickedIntersect = intersects.find(i => getCardGroupFromObject(i.object));
+      const clickedCard = getCardGroupFromObject(clickedIntersect?.object);
+      if (!clickedCard) return;
+      if (isZoomed && zoomTarget?.uuid === clickedCard.uuid) {
+        closeBtn.click();
+        return;
+      }
+      zoomTarget = clickedCard;
+      isZoomed = true;
+      zoomOutLerp = false;
+      infoPanel.style.opacity = '1';
+      infoPanel.style.transform = 'translateY(0)';
+      infoPanel.style.pointerEvents = 'auto';
+      
+      const projectIndex = cards.indexOf(clickedCard);
+      projectTitle.textContent = zoomTarget.userData.name;
+      projectCategory.textContent = `Category: ${zoomTarget.userData.category}`;
+      projectFunds.textContent = `Raised: ${zoomTarget.userData.raised}`;
+      projectDays.textContent = `Days Left: ${zoomTarget.userData.days}`;
+      // Update info panel icon
+      const infoPanelIcon = infoPanel.querySelector('img');
+      infoPanelIcon.src = `img/icon${zoomTarget.userData.iconIndex}.jpg`;
+
+      // Update GS Scoring section
+      const scoreNumberSpan = infoPanel.querySelector('#scoreNumber');
+      const scoreCircleProgress = infoPanel.querySelector('.circle-progress');
+      const gsScore = zoomTarget.userData.gsScore;
+
+      scoreNumberSpan.textContent = gsScore;
+
+      // Calculate stroke-dashoffset for the circle fill
+      const circumference = 126;
+      const fillPercentage = gsScore / 100;
+      const strokeDashoffset = circumference * (1 - fillPercentage);
+
+      // Animate the circle fill
+      gsap.to(scoreCircleProgress, { strokeDashoffset: strokeDashoffset, duration: 0.5, ease: 'power2.out' });
+
+      cameraLerpTarget.copy(zoomTarget.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0, 0, 2.5)));
+    }
+  });
+
+  // Add modal functionality
+  const modal = document.getElementById('projectModal');
+  const modalClose = document.getElementById('modalClose');
+  const openButton = document.querySelector('.buttons button:first-child');
+  const preloader = modal.querySelector('.preloader');
+  const modalContent = modal.querySelector('.modal-content');
+
+  openButton.addEventListener('click', () => {
+    if (zoomTarget) {
+      // Update modal content
+      document.getElementById('modalProjectIcon').src = `img/icon${zoomTarget.userData.iconIndex}.jpg`;
+      document.getElementById('modalProjectTitle').textContent = zoomTarget.userData.name;
+
+      // Show modal with fade out
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Show preloader
+      preloader.classList.add('active');
+      modalContent.style.opacity = '0';
+
+      // Hide info panel immediately
+      infoPanel.style.opacity = '0';
+      infoPanel.style.transform = 'translateY(10px)';
+      infoPanel.style.pointerEvents = 'none';
+
+      // Zoom out the main page
+      isZoomed = false;
+      zoomOutLerp = true;
+      zoomTarget = null;
+      cameraLerpTarget.set(0, 0, 10);
+
+      // After 1 second, hide preloader and show content
+      setTimeout(() => {
+        preloader.classList.remove('active');
+        modalContent.style.opacity = '1';
+      }, 1000);
+    }
+  });
+
+  modalClose.addEventListener('click', () => {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    preloader.classList.remove('active');
+    modalContent.style.opacity = '0';
+    
+    // Reset camera position
+    isZoomed = false;
+    zoomOutLerp = true;
+    zoomTarget = null;
+    cameraLerpTarget.set(0, 0, 10);
+  });
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      preloader.classList.remove('active');
+      modalContent.style.opacity = '0';
+      
+      // Reset camera position
+      isZoomed = false;
+      zoomOutLerp = true;
+      zoomTarget = null;
+      cameraLerpTarget.set(0, 0, 10);
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      preloader.classList.remove('active');
+      modalContent.style.opacity = '0';
+      
+      // Reset camera position
+      isZoomed = false;
+      zoomOutLerp = true;
+      zoomTarget = null;
+      cameraLerpTarget.set(0, 0, 10);
+    }
+  });
+
+  closeBtn.addEventListener("click", () => {
+    isZoomed = false;
+    zoomOutLerp = true;
+    zoomTarget = null;
+    cameraLerpTarget.set(0, 0, 10);
+    infoPanel.style.opacity = '0';
+    infoPanel.style.transform = 'translateY(10px)';
+    infoPanel.style.pointerEvents = 'none';
+  });
+
+  document.querySelectorAll('.tabButton').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (isZoomed) {
+        pendingCategory = btn.getAttribute('data-category');
+        closeBtn.click();
+        return;
+      }
+
+      document.querySelectorAll('.tabButton').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const val = btn.getAttribute('data-category');
+
+      // Сначала скрываем все карточки
+      cards.forEach(card => {
+        gsap.killTweensOf(card.position);
+        card.visible = false;
+      });
+
+      const filtered = cards.filter(c => val === 'all' || c.userData.category === val);
+      
+      // Calculate grid dimensions based on number of cards
+      let cols;
+      if (filtered.length <= 2) {
+        cols = filtered.length; // 1 or 2 columns for 1-2 cards
+      } else {
+        cols = 3; // 3 columns for 3+ cards
+      }
+      
+      const rows = Math.ceil(filtered.length / cols);
+      
+      // Calculate spacing based on viewport
+      const spacingX = window.innerWidth / 190;
+      const spacingY = window.innerHeight / 220;
+      
+      // Calculate total grid dimensions
+      const totalWidth = (cols - 1) * spacingX;
+      const totalHeight = (rows - 1) * spacingY;
+      
+      // Calculate center offsets
+      const centerX = -totalWidth / 2;
+      const centerY = -totalHeight / 2;
+
+      // Position and show only filtered cards
+      filtered.forEach((card, i) => {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+        
+        // Calculate base position with perfect centering
+        const baseX = centerX + (col * spacingX);
+        const baseY = centerY + (row * spacingY);
+        
+        // Add random offsets for more dynamic appearance
+        const randomOffsetX = (Math.random() - 0.5) * 0.5; // Random offset between -0.25 and 0.25
+        const randomOffsetY = (Math.random() - 0.5) * 0.5; // Random offset between -0.25 and 0.25
+        const randomOffsetZ = (Math.random() - 0.5) * 4; // Random depth between -2 and 2
+        
+        card.visible = true;
+        gsap.to(card.position, {
+          x: baseX + randomOffsetX,
+          y: baseY + randomOffsetY,
+          z: randomOffsetZ,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+      });
+
+      // Move non-filtered cards out of view and keep them hidden
+      cards.forEach(card => {
+        if (!filtered.includes(card)) {
+          gsap.to(card.position, {
+            x: 0,
+            y: 0,
+            z: -20,
+            duration: 0.5,
+            onComplete: () => {
+              card.visible = false;
+            }
+          });
+        }
+      });
+    });
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    group.position.x += (parallax.x * 1 - group.position.x) * 0.02;
+    group.position.y += (parallax.y * 1 - group.position.y) * 0.02;
+    camera.position.lerp(cameraLerpTarget, 0.1);
+
+    if (!isZoomed && pendingCategory) {
+      document.querySelector(`.tabButton[data-category='${pendingCategory}']`).click();
+      pendingCategory = null;
+    }
+
+    renderer.render(scene, camera);
+  }
+  animate();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const avatar = document.getElementById('profileAvatar');
+    const dropdown = document.getElementById('profileDropdown');
+    
+    // Убираем inline стиль display:none
+    dropdown.removeAttribute('style');
+    
+    avatar.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  });
+
+  document.getElementById('launchpadMenuItem').addEventListener('click', function(e) {
+    window.location.href = 'launchpad.html';
+  });
+
+  document.getElementById('mainLogo').addEventListener('click', function(e) {
+    window.location.href = 'index.html';
+  });
+</script>
+<script>
+  // Add this at the beginning of your script section
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const preloader = document.getElementById('preloader');
+      const mainContent = document.getElementById('main-content');
+      
+      preloader.style.opacity = '0';
+      preloader.style.transition = 'opacity 0.5s ease-in-out';
+      
+      setTimeout(() => {
+        preloader.style.display = 'none';
+        mainContent.classList.add('visible');
+        // Показываем кнопки после прелоадера
+        const cardControls = document.getElementById('cardControls');
+        if (cardControls) cardControls.style.display = 'flex';
+      }, 500);
+    }, 2000);
+  });
+</script>
+<script>
+  document.querySelector('.header-add').addEventListener('click', function() {
+    window.location.href = 'create.html';
+  });
+</script>
+</body>
+</html>

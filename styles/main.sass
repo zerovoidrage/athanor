@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap')
+// Base
+@import base/fonts/fonts
+@import base/tokens/tokens
+
+// Components
+@import components/dropdown/dropdown
+@import components/layout/base
+@import components/layout/reset
+@import components/header/header
+@import components/cards/project-card
+@import components/panels/info-panel
+@import components/panels/gs-scoring
+@import components/buttons/buttons
+@import modals/project
+@import components/layout/create-page
+
+body 
+  -webkit-font-smoothing: antialiased !important
+
+#filterBar
+  position: absolute
+  bottom: 60px
+  left: 50%
+  transform: translateX(-50%)
+  z-index: 10
+
+.tabButton
+  background: rgba(255, 255, 255, 0)
+  color: white
+  border: 1px solid rgba(255, 255, 255, 0.184)
+  font-size: 16px
+  padding: 8px 20px
+  margin-right: 12px
+  border-radius: 100px
+  cursor: pointer
+  font-family: "ATNR-UI", sans-serif !important
+
+  &.active
+    background: white
+    color: black

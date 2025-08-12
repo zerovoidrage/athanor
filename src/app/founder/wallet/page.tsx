@@ -1,0 +1,17 @@
+'use client';
+
+import React from 'react';
+
+export default function FounderWalletPage() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1"></div>
+      <div className="p-4 pb-10">
+        <h1 className="text-heading text-white-900 mb-6">Wallet</h1>
+        <div className="bg-onsurface-900 rounded-lg p-6">
+          <p className="text-body text-white-700">Founder wallet functionality coming soon...</p>
+        </div>
+      </div>
+    </div>
+  );
+}

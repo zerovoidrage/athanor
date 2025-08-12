@@ -1,0 +1,83 @@
+.profile-dropdown
+  position: fixed
+  top: 76px
+  right: 28px
+  width: 260px
+  background: $onsurface900
+  border-radius: $border-radius-lg
+  padding: 12px
+  z-index: 100
+  display: flex
+  gap: 24px
+  flex-direction: column
+  opacity: 0
+  visibility: hidden
+  transform: translateY(-10px)
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease
+
+  &.active
+    opacity: 1
+    visibility: visible
+    transform: translateY(0)
+
+  .profile-dropdown__user
+    padding: 8px
+    color: $white600
+
+  .profile-dropdown__list
+    display: flex
+    flex-direction: column
+
+    .profile-dropdown__item
+      display: flex
+      align-items: center
+      gap: 12px
+      padding: 8px 8px
+      color: #fff
+      cursor: pointer
+      border: none
+      background: none
+      transition: background 0.15s
+      border-radius: $border-radius-md
+
+      &:hover
+        background: $onsurface800
+
+      &.disabled
+        color: #888
+        cursor: default
+        background: #232323
+
+      img
+        width: 20px
+        height: 20px
+
+    .profile-dropdown__item--external
+      display: flex
+      align-items: center
+      justify-content: space-between
+      gap: 12px
+
+      .external-icon
+        width: 18px
+        height: 18px
+        margin-left: 8px
+
+  .profile-dropdown__divider
+    height: 1px
+    background: #363636
+    margin: 20px 0px
+
+
+  .profile-dropdown__footer
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 8px
+    margin-bottom: 8px
+
+    & a 
+      color: $white600
+
+      &:hover
+        color: $white800

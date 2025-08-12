@@ -1,0 +1,31 @@
+'use client';
+
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+interface DropdownContextType {
+  isAnyDropdownOpen: boolean;
+  setIsAnyDropdownOpen: (isOpen: boolean) => void;
+}
+
+const DropdownContext = createContext<DropdownContextType | undefined>(undefined);
+
+export function DropdownProvider({ children }: { children: ReactNode }) {
+  const [isAnyDropdownOpen, setIsAnyDropdownOpen] = useState(false);
+
+  return (
+    <DropdownContext.Provider value={{ 
+      isAnyDropdownOpen, 
+      setIsAnyDropdownOpen 
+    }}>
+      {children}
+    </DropdownContext.Provider>
+  );
+}
+
+export function useDropdown() {
+  const context = useContext(DropdownContext);
+  if (context === undefined) {
+    throw new Error('useDropdown must be used within a DropdownProvider');
+  }
+  return context;
+}
