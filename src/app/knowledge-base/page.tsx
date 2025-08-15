@@ -402,7 +402,7 @@ export default function KnowledgeBasePage() {
           {/* Sidebar Menu - прижато к левому краю */}
           <div className="w-80 flex-shrink-0 pl-2">
             <div className="sticky top-0">
-              <nav className="space-y-0">
+              <nav className="space-y-1">
                 {menuItems.map((item) => (
                   <button
                     key={item.id}
