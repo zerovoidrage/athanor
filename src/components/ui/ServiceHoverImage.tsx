@@ -17,11 +17,12 @@ export default function ServiceHoverImage({ isVisible, mouseX, mouseY, imageUrl,
 
   return (
     <div
-      className="absolute pointer-events-none z-50 transition-opacity duration-200"
+      className="absolute pointer-events-none transition-opacity duration-200"
       style={{
         left: mouseX + 40,
         top: mouseY - 360,
-        opacity: 1
+        opacity: 1,
+        pointerEvents: 'none'
       }}
     >
       <div className="bg-white shadow-2xl overflow-hidden">

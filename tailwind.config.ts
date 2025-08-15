@@ -19,10 +19,10 @@ const config: Config = {
         'semibold': '700',
       },
       fontSize: {
-        'largetitle': ['30px', {
-          lineHeight: '140%',
+        'largetitle': ['38px', {
+          lineHeight: '130%',
           letterSpacing: '-0.01em',
-          fontWeight: '500',
+          fontWeight: '400',
         }],
         'display': ['24px', {
           lineHeight: '140%',
@@ -70,13 +70,13 @@ const config: Config = {
         white: {
           500: '#1a1a1a',
           600: '#545454',
-          700: '#808080',
+          700: 'rgba(255, 255, 255, 0.50)',
           800: '#DDDDDD',
           900: '#ffffff',
         },
         // Surface palette
         surface: {
-          800: '#0a0a0a',
+          800: '#292929',
           900: '#000000',
         },
         // OnSurface palette

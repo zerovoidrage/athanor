@@ -569,13 +569,14 @@
       document.getElementById('modalProjectIcon').src = `img/icon${zoomTarget.userData.iconIndex}.jpg`;
       document.getElementById('modalProjectTitle').textContent = zoomTarget.userData.name;
 
-      // Show modal with fade out
+      // Show modal with blur and scale effects
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
 
       // Show preloader
       preloader.classList.add('active');
       modalContent.style.opacity = '0';
+      modalContent.style.transform = 'scale(0.9)';
 
       // Hide info panel immediately
       infoPanel.style.opacity = '0';
@@ -588,56 +589,75 @@
       zoomTarget = null;
       cameraLerpTarget.set(0, 0, 10);
 
-      // After 1 second, hide preloader and show content
+      // After 1 second, hide preloader and show content with scale animation
       setTimeout(() => {
         preloader.classList.remove('active');
         modalContent.style.opacity = '1';
+        modalContent.style.transform = 'scale(1)';
       }, 1000);
     }
   });
 
   modalClose.addEventListener('click', () => {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-    preloader.classList.remove('active');
+    // Animate modal content out
     modalContent.style.opacity = '0';
+    modalContent.style.transform = 'scale(0.9)';
     
-    // Reset camera position
-    isZoomed = false;
-    zoomOutLerp = true;
-    zoomTarget = null;
-    cameraLerpTarget.set(0, 0, 10);
-  });
-
-  // Close modal when clicking outside
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    // Close modal after animation
+    setTimeout(() => {
       modal.classList.remove('active');
       document.body.style.overflow = '';
       preloader.classList.remove('active');
-      modalContent.style.opacity = '0';
       
       // Reset camera position
       isZoomed = false;
       zoomOutLerp = true;
       zoomTarget = null;
       cameraLerpTarget.set(0, 0, 10);
+    }, 300);
+  });
+
+  // Close modal when clicking outside
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      // Animate modal content out
+      modalContent.style.opacity = '0';
+      modalContent.style.transform = 'scale(0.9)';
+      
+      // Close modal after animation
+      setTimeout(() => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        preloader.classList.remove('active');
+        
+        // Reset camera position
+        isZoomed = false;
+        zoomOutLerp = true;
+        zoomTarget = null;
+        cameraLerpTarget.set(0, 0, 10);
+      }, 300);
     }
   });
 
   // Close modal with Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('active')) {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-      preloader.classList.remove('active');
+      // Animate modal content out
       modalContent.style.opacity = '0';
+      modalContent.style.transform = 'scale(0.9)';
       
-      // Reset camera position
-      isZoomed = false;
-      zoomOutLerp = true;
-      zoomTarget = null;
-      cameraLerpTarget.set(0, 0, 10);
+      // Close modal after animation
+      setTimeout(() => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        preloader.classList.remove('active');
+        
+        // Reset camera position
+        isZoomed = false;
+        zoomOutLerp = true;
+        zoomTarget = null;
+        cameraLerpTarget.set(0, 0, 10);
+      }, 300);
     }
   });
 

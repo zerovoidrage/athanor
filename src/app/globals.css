@@ -98,6 +98,10 @@
   box-sizing: border-box;
 }
 
+html, body { 
+  overflow-anchor: none; /* выключаем scroll anchoring */
+}
+
 html, body {
   margin: 0 !important;
   padding: 0 !important;
@@ -135,3 +139,10 @@ body {
   background: rgb(var(--background-start-rgb));
   font-family: 'SuisseIntl', sans-serif;
 }
+
+/* Стили для блюра основного контента при открытии модального окна транзакций */
+body.modal-open {
+  overflow: hidden;
+}
+
+

@@ -22,7 +22,7 @@ export default function UserDropdown({
   if (!isOpen) return null;
 
   // Базовые стили
-  const baseStyles = "absolute top-full mt-4 rounded-md shadow-xl z-50 right-0 w-64 -mr-2";
+  const baseStyles = "absolute top-full mt-4 rounded-md z-50 right-0 w-64 -mr-2";
   
   // Стили дропдауна
   const dropdownStyles = {

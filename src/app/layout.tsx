@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import ProgressLine from "@/components/layout/ProgressLine";
-import ContentWrapper from "@/components/layout/ContentWrapper";
-import ServiceModalWrapper from "@/components/modals/ServiceModalWrapper";
-import { MarketplaceProvider } from "@/contexts/MarketplaceContext";
-import { DropdownProvider } from "@/contexts/DropdownContext";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ServiceModalProvider } from "@/contexts/ServiceModalContext";
-import { TransactionModalProvider } from "@/contexts/TransactionModalContext";
+import ClientLayout from "@/components/layout/ClientLayout";
 
 export const metadata: Metadata = {
   title: "Athanor",
@@ -60,24 +52,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-black text-white min-h-screen">
-        <AuthProvider>
-          <DropdownProvider>
-            <MarketplaceProvider>
-              <ServiceModalProvider>
-                <TransactionModalProvider>
-                  <ProgressLine />
-                  <Header />
-                  <ServiceModalWrapper />
-                  <ContentWrapper>
-                    <main className="min-h-screen">
-                      {children}
-                    </main>
-                  </ContentWrapper>
-                </TransactionModalProvider>
-              </ServiceModalProvider>
-            </MarketplaceProvider>
-          </DropdownProvider>
-        </AuthProvider>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );

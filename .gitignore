@@ -44,4 +44,11 @@ Thumbs.db
 public/img/threejs/abyss/*.jpg
 public/img/threejs/abyss/*.png
 public/img/threejs/abyss/*.webp
-EOF
+EOFpublic/img/
+
+echo "public/img/" >> .gitignore
+echo "public/threejs/" >> .gitignore
+echo "*.jpg" >> .gitignore
+echo "*.png" >> .gitignore
+echo "*.webp" >> .gitignore
+echo ".next/" >> .gitignorenode_modules/

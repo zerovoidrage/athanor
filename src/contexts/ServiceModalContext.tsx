@@ -1,50 +1,46 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import ServiceModalWrapper, { ServiceModalStateProvider } from '@/components/modals/ServiceModalWrapper';
 
-interface ServiceModalContextType {
-  isOpen: boolean;
-  serviceId: number | null;
+type Ctx = {
   openModal: (serviceId: number) => void;
   closeModal: () => void;
-}
-
-const ServiceModalContext = createContext<ServiceModalContextType | undefined>(undefined);
-
-export const useServiceModal = () => {
-  const context = useContext(ServiceModalContext);
-  if (context === undefined) {
-    throw new Error('useServiceModal must be used within a ServiceModalProvider');
-  }
-  return context;
 };
 
-interface ServiceModalProviderProps {
-  children: ReactNode;
-}
+const ServiceModalContext = createContext<Ctx | null>(null);
 
-export const ServiceModalProvider: React.FC<ServiceModalProviderProps> = ({ children }) => {
+export function ServiceModalProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [serviceId, setServiceId] = useState<number | null>(null);
 
-  const openModal = (id: number) => {
+  const openModal = useCallback((id: number) => {
     setServiceId(id);
     setIsOpen(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
     setServiceId(null);
-  };
+  }, []);
 
   return (
-    <ServiceModalContext.Provider value={{
-      isOpen,
-      serviceId,
-      openModal,
-      closeModal
-    }}>
-      {children}
+    <ServiceModalContext.Provider value={{ openModal, closeModal }}>
+      <ServiceModalStateProvider 
+        isOpen={isOpen} 
+        serviceId={serviceId} 
+        closeModal={closeModal}
+      >
+        {children}
+        {/* Модалка всегда рядом с body через Portal */}
+        <ServiceModalWrapper />
+      </ServiceModalStateProvider>
     </ServiceModalContext.Provider>
   );
-};
+}
+
+export function useServiceModal() {
+  const ctx = useContext(ServiceModalContext);
+  if (!ctx) throw new Error('useServiceModal must be used within ServiceModalProvider');
+  return ctx;
+}
