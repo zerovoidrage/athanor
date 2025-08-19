@@ -122,10 +122,10 @@ export default function Header() {
           router.push('/launchpad');
           break;
         case 'investor':
-          router.push('/investor/dashboard');
+          router.push('/vault');
           break;
         case 'advisor':
-          router.push('/advisor/services');
+          router.push('/services');
           break;
       }
     }
@@ -165,9 +165,9 @@ export default function Header() {
         return 'referral';
       case '/connect':
         return 'connect';
-      case '/investor/dashboard':
+              case '/vault':
         return 'vault';
-      case '/advisor/services':
+              case '/services':
         return 'advisor services';
       default:
         return 'abyss';
@@ -228,7 +228,7 @@ export default function Header() {
           {/* Имя пользователя */}
           <UserDisplayName displayName={displayName} />
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/investor/dashboard')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/vault')}>
             Vault
           </UserDropdownItem>
           
@@ -249,7 +249,7 @@ export default function Header() {
           {/* Имя пользователя */}
           <UserDisplayName displayName={displayName} />
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/advisor/services')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/services')}>
             Services
           </UserDropdownItem>
           

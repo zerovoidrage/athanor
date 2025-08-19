@@ -122,10 +122,10 @@ export default function Header() {
           router.push('/launchpad');
           break;
         case 'investor':
-          router.push('/investor/dashboard');
+          router.push('/vault');
           break;
         case 'advisor':
-          router.push('/advisor/services');
+          router.push('/services');
           break;
       }
     }
@@ -163,9 +163,9 @@ export default function Header() {
         return 'referral';
       case '/founder/profile':
         return displayName || 'profile';
-      case '/investor/profile':
+              case '/profile':
         return displayName || 'profile';
-      case '/advisor/profile':
+              case '/profile':
         return displayName || 'profile';
       case '/profile':
         return displayName || 'profile';
@@ -177,9 +177,9 @@ export default function Header() {
         return 'referral';
       case '/connect':
         return 'connect';
-      case '/investor/dashboard':
+              case '/vault':
         return 'vault';
-      case '/advisor/services':
+              case '/services':
         return 'advisor services';
       default:
         return 'abyss';
@@ -240,14 +240,14 @@ export default function Header() {
           {/* Имя пользователя */}
           <UserDisplayName displayName={displayName} />
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/investor/dashboard')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/vault')}>
             Vault
           </UserDropdownItem>
           
           {/* Разделитель */}
           <div className="border-t border-gray-700"></div>
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/investor/profile')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/profile')}>
             Profile
           </UserDropdownItem>
           <UserDropdownItem onClick={() => handleLogout()}>
@@ -261,14 +261,14 @@ export default function Header() {
           {/* Имя пользователя */}
           <UserDisplayName displayName={displayName} />
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/advisor/services')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/services')}>
             Services
           </UserDropdownItem>
           
           {/* Разделитель */}
           <div className="border-t border-gray-700"></div>
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/advisor/profile')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/profile')}>
             Profile
           </UserDropdownItem>
           <UserDropdownItem onClick={() => handleLogout()}>

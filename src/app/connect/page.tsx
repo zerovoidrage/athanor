@@ -18,10 +18,10 @@ export default function ConnectPage() {
         router.push('/launchpad');
         break;
       case 'investor':
-        router.push('/investor/dashboard');
+        router.push('/vault');
         break;
       case 'advisor':
-        router.push('/advisor/services');
+        router.push('/services');
         break;
     }
   };
