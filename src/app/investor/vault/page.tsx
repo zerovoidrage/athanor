@@ -4,7 +4,7 @@ import React, { useLayoutEffect, useEffect, useState, useRef } from 'react';
 import { motion, LayoutGroup } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTransactionModal } from '@/contexts/TransactionModalContext';
-import { useThreeJSCardModal } from '@/contexts/ThreeJSCardModalContext';
+
 import TransactionModal from '@/components/modals/TransactionModal';
 import { transactionItemStyles } from '@/styles/transactionItem';
 import { ArrowUpRight, ArrowDownRight, Coins, Wallet, Dollar, Bank, PiggyBank, Plus, Minus, Undo, CoinsSwap, Compass, AppleWallet, Clock } from 'iconoir-react';
@@ -13,7 +13,7 @@ import ThreeJSCard from '@/components/ThreeJSCard';
 export default function InvestorDashboardPage() {
   const { displayName } = useAuth();
   const { openModal, isOpen, transaction, closeModal } = useTransactionModal();
-  const { openThreeJSCardModal } = useThreeJSCardModal();
+
   const [mounted, setMounted] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);

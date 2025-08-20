@@ -4,7 +4,6 @@ const nextConfig: NextConfig = {
   // Отключаем Next.js dev overlay (иконку в углу экрана)
   devIndicators: {
     buildActivity: false,
-    buildActivityPosition: 'bottom-right',
   },
   
   async rewrites() {
