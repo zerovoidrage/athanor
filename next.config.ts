@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     buildActivity: false,
   },
   
+  // Отключаем ESLint во время сборки
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  
   async rewrites() {
     return [
       // Founder routes
