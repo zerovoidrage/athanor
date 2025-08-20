@@ -4,11 +4,8 @@ import CardsSceneContainer from '@/components/scenes/CardsSceneContainer';
 
 export default function Home() {
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
-      {/* Three.js сцена с карточками */}
+    <div id="app-viewport" className="relative w-full h-screen overflow-hidden bg-black">
       <CardsSceneContainer />
-      
-      {/* Пустой экран */}
     </div>
   );
 }

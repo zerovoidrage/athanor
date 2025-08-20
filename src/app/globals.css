@@ -178,4 +178,24 @@ body.modal-open {
   display: none !important;
 }
 
+/* Основной контент: scale + blur */
+body.overlay-active #app-viewport {
+  transition: transform 200ms ease, filter 200ms ease;
+  transform: scale(0.96);
+  filter: blur(2px);
+}
+
+/* Хедер: только blur + затемнение */
+body.overlay-active #header {
+  transition: filter 200ms ease, background-color 200ms ease !important;
+  filter: blur(6px) !important;
+  background-color: rgba(0, 0, 0, 0.8) !important; /* затемнение как в маркетплейсе */
+}
+
+/* UI-компоненты вне вьюпорта (через портал) остаются чистыми */
+[data-ui="true"] {
+  filter: none !important;
+}
+
+
 

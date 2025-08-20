@@ -11,6 +11,8 @@ import { useMarketplace } from '@/contexts/MarketplaceContext';
 import { useAbyss } from '@/contexts/AbyssContext';
 import { useDropdown } from '@/contexts/DropdownContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOverlay } from '@/contexts/OverlayContext';
+
 import Link from 'next/link';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import SecondaryButton from '@/components/ui/SecondaryButton';
@@ -27,6 +29,7 @@ export default function Header() {
   const { selectedCategory: marketplaceCategory, setSelectedCategory: setMarketplaceCategory } = useMarketplace();
   const { selectedCategory: abyssCategory, setSelectedCategory: setAbyssCategory } = useAbyss();
   const { setIsAnyDropdownOpen } = useDropdown();
+  const { isOverlayOpen } = useOverlay();
 
   // Проверяем, открыт ли любой dropdown
   const isAnyDropdownOpen = isDropdownOpen || isNavDropdownOpen || isCategoryDropdownOpen || isConnectDropdownOpen;
@@ -279,7 +282,7 @@ export default function Header() {
       {/* Оверлей для затемнения и блюра */}
       <div 
         className={`fixed inset-0 bg-black backdrop-blur-sm z-40 transition-all duration-200 ease-out will-change-opacity ${
-          isAnyDropdownOpen 
+          (isAnyDropdownOpen || isOverlayOpen)
             ? 'bg-opacity-80 opacity-100' 
             : 'bg-opacity-0 opacity-0 pointer-events-none'
         }`}
@@ -292,8 +295,14 @@ export default function Header() {
       />
       
       <header 
-        className="fixed top-0 left-0 right-0 text-white w-full p-4 z-50 bg-transparent select-none" 
-        style={{ padding: '16px 16px', backgroundColor: 'transparent' }}
+        id="header"
+        className="fixed top-0 left-0 right-0 text-white w-full p-4 z-50 select-none" 
+        style={{ 
+          padding: '16px 16px',
+          backgroundColor: isOverlayOpen ? 'rgba(0, 0, 0, 0.8)' : 'transparent',
+          filter: isOverlayOpen ? 'blur(6px)' : 'none',
+          transition: 'filter 200ms ease, background-color 200ms ease'
+        }}
       >
         <div className="flex justify-between items-start">
           {/* Логотип и название раздела */}

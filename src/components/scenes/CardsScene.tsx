@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import ProjectInfoCard from '@/components/ui/ProjectInfoCard';
 import { useAbyss } from '@/contexts/AbyssContext';
+import { useOverlay } from '@/contexts/OverlayContext';
 
 // Массив путей к изображениям (вынесен на уровень модуля)
 const imagePaths = [
@@ -53,6 +54,7 @@ export default function CardsScene() {
 
   // Получаем выбранную категорию из контекста (только для мокового переключения)
   const { selectedCategory } = useAbyss();
+  const { setOverlayOpen } = useOverlay();
 
   // Данные карточек с названиями Web3 проектов (возвращаем к исходным 9 карточкам)
   const cardsData: CardData[] = [
@@ -229,6 +231,7 @@ export default function CardsScene() {
     setSelectedProject(null);
     setShowInfoCard(false);
     cameraLerpTargetRef.current.set(0, 0, 8);
+    setOverlayOpen(false);
   };
 
   // Инициализация сцены
@@ -447,6 +450,7 @@ export default function CardsScene() {
             setSelectedProject(null);
             setShowInfoCard(false);
             cameraLerpTargetRef.current.set(0, 0, 8);
+            setOverlayOpen(false);
           }
           return;
         }
@@ -460,6 +464,7 @@ export default function CardsScene() {
           setSelectedProject(null);
           setShowInfoCard(false);
           cameraLerpTargetRef.current.set(0, 0, 8);
+          setOverlayOpen(false);
           return;
         }
         
@@ -473,6 +478,7 @@ export default function CardsScene() {
           imageIndex: (cardRoot as any).userData.imageIndex 
         });
         setShowInfoCard(true);
+        setOverlayOpen(true);
         
         // Zoom к карточке (безопасно относительно направления камеры)
         const worldPosition = new THREE.Vector3();
@@ -525,6 +531,7 @@ export default function CardsScene() {
         setSelectedProject(null);
         setShowInfoCard(false);
         cameraLerpTargetRef.current.set(0, 0, 8);
+        setOverlayOpen(false);
       }
     };
 

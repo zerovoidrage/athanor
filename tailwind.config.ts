@@ -19,6 +19,11 @@ const config: Config = {
         'semibold': '700',
       },
       fontSize: {
+        'number': ['20px', {
+          lineHeight: '120%',
+          letterSpacing: '-0.00em',
+          fontWeight: '400',
+        }],
         'largetitle': ['42px', {
           lineHeight: '120%',
           letterSpacing: '-0.01em',

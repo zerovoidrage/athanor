@@ -8,6 +8,7 @@ import ServiceModalWrapper from "@/components/modals/ServiceModalWrapper";
 import { MarketplaceProvider } from "@/contexts/MarketplaceContext";
 import { AbyssProvider } from "@/contexts/AbyssContext";
 import { DropdownProvider } from "@/contexts/DropdownContext";
+
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ServiceModalProvider } from "@/contexts/ServiceModalContext";
 import { TransactionModalProvider } from "@/contexts/TransactionModalContext";
@@ -26,22 +27,22 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   return (
     <AuthProvider>
       <DropdownProvider>
-        <MarketplaceProvider>
-          <AbyssProvider>
-            <ServiceModalProvider>
-              <TransactionModalProvider>
-                <ProgressLine />
-                <Header />
-                <ServiceModalWrapper />
-                <ContentWrapper>
-                  <main className="min-h-screen">
-                    {children}
-                  </main>
-                </ContentWrapper>
-              </TransactionModalProvider>
-            </ServiceModalProvider>
-          </AbyssProvider>
-        </MarketplaceProvider>
+                            <MarketplaceProvider>
+                      <AbyssProvider>
+                        <ServiceModalProvider>
+                          <TransactionModalProvider>
+                            <ProgressLine />
+                            <Header />
+                            <ServiceModalWrapper />
+                            <ContentWrapper>
+                              <main className="min-h-screen">
+                                {children}
+                              </main>
+                            </ContentWrapper>
+                          </TransactionModalProvider>
+                        </ServiceModalProvider>
+                      </AbyssProvider>
+                    </MarketplaceProvider>
       </DropdownProvider>
     </AuthProvider>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
 import NextJSDevToolsRemover from "@/components/NextJSDevToolsRemover";
+import { OverlayProvider } from "@/contexts/OverlayContext";
 
 export const metadata: Metadata = {
   title: "Abyss | Athanor",
@@ -58,9 +59,11 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-black text-white min-h-screen">
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <OverlayProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </OverlayProvider>
         <NextJSDevToolsRemover />
       </body>
     </html>
