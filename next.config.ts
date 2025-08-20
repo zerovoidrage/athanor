@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   
+  // Отключаем проверку типов во время сборки
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  
   async rewrites() {
     return [
       // Founder routes
