@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
+import NextJSDevToolsRemover from "@/components/NextJSDevToolsRemover";
 
 export const metadata: Metadata = {
-  title: "Athanor",
+  title: "Abyss | Athanor",
   description: "Athanor application",
+  icons: {
+    icon: '/avatar.png', // или любое другое изображение из public/
+    shortcut: '/avatar.png',
+    apple: '/avatar.png',
+  },
 };
 
 export default function RootLayout({
@@ -55,6 +61,7 @@ export default function RootLayout({
         <ClientLayout>
           {children}
         </ClientLayout>
+        <NextJSDevToolsRemover />
       </body>
     </html>
   );

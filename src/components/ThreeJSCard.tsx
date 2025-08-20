@@ -18,7 +18,11 @@ const ThreeJSCard: React.FC<ThreeJSCardProps> = ({ width = 400, height = 300 }) 
   const cardRef = useRef<THREE.Group | null>(null);
   const { displayName } = useAuth();
   
+
+  
   console.log('ThreeJSCard - displayName:', displayName);
+
+
 
   useEffect(() => {
     if (!mountRef.current) return;

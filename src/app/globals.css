@@ -10,12 +10,10 @@
 
 /* Предотвращение layout shift при смене шрифтов */
 .header-section-title {
-  min-width: 120px;
   display: inline-block;
 }
 
 .header-categories {
-  min-width: 120px;
   display: inline-block;
 }
 
@@ -143,6 +141,41 @@ body {
 /* Стили для блюра основного контента при открытии модального окна транзакций */
 body.modal-open {
   overflow: hidden;
+}
+
+/* Скрываем Next.js dev tools иконку */
+[data-nextjs-dev-overlay] {
+  display: none !important;
+}
+
+/* Скрываем любые возможные иконки Next.js */
+[data-nextjs-dev-indicator] {
+  display: none !important;
+}
+
+/* Скрываем build activity indicator */
+[data-nextjs-build-activity] {
+  display: none !important;
+}
+
+/* Дополнительные селекторы для скрытия Next.js dev tools */
+.nextjs-dev-overlay,
+.nextjs-dev-indicator,
+.nextjs-build-activity,
+[data-nextjs-dev-overlay],
+[data-nextjs-dev-indicator],
+[data-nextjs-build-activity] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Скрываем любые элементы с высоким z-index, которые могут быть Next.js dev tools */
+[style*="z-index: 999999"],
+[style*="z-index: 1000000"],
+[style*="z-index: 2147483647"] {
+  display: none !important;
 }
 
 

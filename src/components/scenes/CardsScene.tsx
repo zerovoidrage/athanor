@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import ProjectInfoCard from '@/components/ui/ProjectInfoCard';
+import { useAbyss } from '@/contexts/AbyssContext';
 
 // Массив путей к изображениям (вынесен на уровень модуля)
 const imagePaths = [
@@ -50,7 +51,10 @@ export default function CardsScene() {
   const isZoomedRef = useRef(false);
   const zoomTargetRef = useRef<THREE.Group | null>(null);
 
-  // Данные карточек с названиями Web3 проектов
+  // Получаем выбранную категорию из контекста (только для мокового переключения)
+  const { selectedCategory } = useAbyss();
+
+  // Данные карточек с названиями Web3 проектов (возвращаем к исходным 9 карточкам)
   const cardsData: CardData[] = [
     { id: 1, name: "quantumforge", imageIndex: 1, category: "AI", raised: "$45.2k", days: 12, gsScore: 87 },
     { id: 2, name: "datasphere", imageIndex: 2, category: "AI", raised: "$32.8k", days: 8, gsScore: 92 },
@@ -62,6 +66,9 @@ export default function CardsScene() {
     { id: 8, name: "visionai", imageIndex: 8, category: "AI", raised: "$112.5k", days: 14, gsScore: 96 },
     { id: 9, name: "cryptoflex", imageIndex: 9, category: "Other", raised: "$54.8k", days: 9, gsScore: 82 }
   ];
+
+  // Всегда показываем все карточки (моковое переключение)
+  const filteredCardsData = cardsData;
 
   // Создание текстуры для текста
   const createTextTexture = useCallback((text: string) => {

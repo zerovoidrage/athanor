@@ -133,7 +133,8 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ isOpen, onClose, service })
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-[9999]"
+        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+        style={{ zIndex: 99999 }}
         onClick={handleBackdropClick}
       />
 
@@ -148,7 +149,8 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ isOpen, onClose, service })
           stiffness: 200,
           duration: 0.5
         }}
-        className="fixed right-0 top-0 w-1/2 h-full p-2 z-[10000]"
+        className="fixed right-0 top-0 w-1/2 h-full p-2"
+        style={{ zIndex: 100000 }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="service-modal-title"

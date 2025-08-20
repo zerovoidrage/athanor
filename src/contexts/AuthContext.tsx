@@ -52,6 +52,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       displayName: displayName
     };
     localStorage.setItem('athanor_auth', JSON.stringify(authData));
+    
+    // Сохраняем роль в cookie для middleware
+    document.cookie = `userRole=${role}; path=/; max-age=86400`; // 24 часа
   };
 
   const updateDisplayName = (name: string) => {
@@ -85,6 +88,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     // Удаляем из localStorage
     localStorage.removeItem('athanor_auth');
+    
+    // Удаляем cookie
+    document.cookie = 'userRole=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
   };
 
   return (

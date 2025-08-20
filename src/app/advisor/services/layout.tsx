@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Marketplace | Athanor",
-  description: "Service marketplace",
+  title: "Services | Athanor",
+  description: "Advisor services",
 };
 
-export default function MarketplaceLayout({
+export default function ServicesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return children;
 }
+

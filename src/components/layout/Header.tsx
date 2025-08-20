@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import Dropdown, { DropdownItem } from '@/components/ui/Dropdown';
 import UserDropdown, { UserDropdownItem } from '@/components/ui/UserDropdown';
 import { useMarketplace } from '@/contexts/MarketplaceContext';
+import { useAbyss } from '@/contexts/AbyssContext';
 import { useDropdown } from '@/contexts/DropdownContext';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -23,7 +24,8 @@ export default function Header() {
   const [isConnectDropdownOpen, setIsConnectDropdownOpen] = useState(false);
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [pendingRole, setPendingRole] = useState<'founder' | 'investor' | 'advisor' | null>(null);
-  const { selectedCategory, setSelectedCategory } = useMarketplace();
+  const { selectedCategory: marketplaceCategory, setSelectedCategory: setMarketplaceCategory } = useMarketplace();
+  const { selectedCategory: abyssCategory, setSelectedCategory: setAbyssCategory } = useAbyss();
   const { setIsAnyDropdownOpen } = useDropdown();
 
   // Проверяем, открыт ли любой dropdown
@@ -91,7 +93,11 @@ export default function Header() {
   };
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+    if (pathname === '/marketplace') {
+      setMarketplaceCategory(category);
+    } else if (pathname === '/') {
+      setAbyssCategory(category);
+    }
     setIsCategoryDropdownOpen(false);
   };
 
@@ -155,18 +161,6 @@ export default function Header() {
         return 'abyss';
       case '/launchpad':
         return 'launchpad';
-      case '/founder':
-        return 'launchpad';
-      case '/founder/wallet':
-        return 'wallet';
-      case '/founder/referral':
-        return 'referral';
-      case '/founder/profile':
-        return displayName || 'profile';
-              case '/profile':
-        return displayName || 'profile';
-              case '/profile':
-        return displayName || 'profile';
       case '/profile':
         return displayName || 'profile';
       case '/marketplace':
@@ -177,9 +171,9 @@ export default function Header() {
         return 'referral';
       case '/connect':
         return 'connect';
-              case '/vault':
+      case '/vault':
         return 'vault';
-              case '/services':
+      case '/services':
         return 'advisor services';
       default:
         return 'abyss';
@@ -199,13 +193,13 @@ export default function Header() {
           {/* Имя пользователя */}
           <UserDisplayName displayName={displayName} />
           
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/founder')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/launchpad')}>
             Launchpad
           </UserDropdownItem>
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/founder/wallet')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/wallet')}>
             Wallet
           </UserDropdownItem>
-          <UserDropdownItem onClick={() => handleDropdownItemClick('/founder/referral')}>
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/referral')}>
             Referral
           </UserDropdownItem>
           
@@ -280,8 +274,6 @@ export default function Header() {
     return null;
   };
 
-
-
   return (
     <>
       {/* Оверлей для затемнения и блюра */}
@@ -303,215 +295,276 @@ export default function Header() {
         className="fixed top-0 left-0 right-0 text-white w-full p-4 z-50 bg-transparent select-none" 
         style={{ padding: '16px 16px', backgroundColor: 'transparent' }}
       >
-                <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start">
           {/* Логотип и название раздела */}
           <div className="flex items-start gap-4">
-          <div 
-            className="cursor-pointer select-none"
-            onClick={handleLogoClick}
-            onMouseEnter={(e) => {
-              e.currentTarget.querySelector('span')!.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.querySelector('span')!.style.color = '#B3B3B3'; // gray-400
-            }}
-          >
-            <span className="text-subheading transition-colors duration-200 flex items-center gap-4 select-none" style={{ color: '#B3B3B3' }}>
-              athanor
-              <span>/</span>
-            </span>
+            <div 
+              className="cursor-pointer select-none"
+              onClick={handleLogoClick}
+              onMouseEnter={(e) => {
+                e.currentTarget.querySelector('span')!.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.querySelector('span')!.style.color = '#B3B3B3'; // gray-400
+              }}
+            >
+              <span className="text-subheading transition-colors duration-200 flex items-center gap-4 select-none" style={{ color: '#B3B3B3' }}>
+                athanor
+                <span>/</span>
+              </span>
+            </div>
+            
+            {/* Название страницы и категории в одном контейнере */}
+            <div className="flex items-start gap-4">
+              {/* Название страницы справа от логотипа */}
+              <div className="relative header-section-title">
+                {shouldShowNavDropdown() ? (
+                  <div className="relative">
+                    <div 
+                      className="flex items-center gap-2 cursor-pointer hover:text-gray-400 transition-colors select-none"
+                      data-dropdown-trigger
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (isNavDropdownOpen) {
+                          setIsNavDropdownOpen(false);
+                        } else {
+                          setIsNavDropdownOpen(true);
+                        }
+                      }}
+                    >
+                      <span className="text-subheading select-none">
+                        {getPageTitle()}
+                      </span>
+                      <NavArrowDownSolid 
+                        className={`w-4 h-4 transition-transform ${isNavDropdownOpen ? 'rotate-180' : ''}`}
+                      />
+                    </div>
+
+                    {/* Навигационный dropdown меню */}
+                    <Dropdown 
+                      isOpen={isNavDropdownOpen} 
+                      onClose={() => {}}
+                      position="left"
+                    >
+                      <DropdownItem onClick={() => handleNavDropdownItemClick('/')}>
+                        abyss
+                      </DropdownItem>
+                      <DropdownItem onClick={() => {
+                        setIsNavDropdownOpen(false);
+                        window.location.href = '/marketplace';
+                      }}>
+                        marketplace
+                      </DropdownItem>
+                      
+                      {/* Дополнительные пункты */}
+                      <div className="mt-8">
+                        <DropdownItem 
+                          onClick={() => {
+                            setIsNavDropdownOpen(false);
+                          }}
+                          className="text-white-700 hover:text-white-900 hover:bg-onsurface-800"
+                        >
+                          explore athanor
+                        </DropdownItem>
+                        <DropdownItem 
+                          onClick={() => {
+                            setIsNavDropdownOpen(false);
+                            window.location.href = '/knowledge-base';
+                          }}
+                          className="text-white-700 hover:text-white-900 hover:bg-onsurface-800"
+                        >
+                          knowledge base
+                        </DropdownItem>
+                        <DropdownItem 
+                          onClick={() => {
+                            setIsNavDropdownOpen(false);
+                          }}
+                          className="text-white-700 hover:text-white-900 hover:bg-onsurface-800"
+                        >
+                          twitter
+                        </DropdownItem>
+                      </div>
+                    </Dropdown>
+                  </div>
+                ) : (
+                  <div className="flex items-start">
+                    <span className="text-subheading">
+                      {getPageTitle()}
+                    </span>
+
+                  </div>
+                )}
+              </div>
+
+              {/* Категории для Marketplace и Abyss */}
+              {(pathname === '/marketplace' || pathname === '/') && (
+                <div className="relative header-categories">
+                  <div 
+                    className="flex items-center gap-2 cursor-pointer hover:text-gray-400 transition-colors select-none"
+                    data-dropdown-trigger
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      if (isCategoryDropdownOpen) {
+                        setIsCategoryDropdownOpen(false);
+                      } else {
+                        setIsCategoryDropdownOpen(true);
+                      }
+                    }}
+                  >
+                    <span className="text-subheading select-none">
+                      {pathname === '/marketplace' ? marketplaceCategory.toLowerCase() : abyssCategory.toLowerCase()}
+                    </span>
+                    <NavArrowDownSolid 
+                      className={`w-4 h-4 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}
+                    />
+                  </div>
+
+                  {/* Dropdown категорий */}
+                  <Dropdown 
+                    isOpen={isCategoryDropdownOpen} 
+                    onClose={() => {}}
+                    position="left"
+                  >
+                    {pathname === '/marketplace' ? (
+                      // Категории для Marketplace
+                      <>
+                        <DropdownItem onClick={() => handleCategoryChange('all')}>
+                          all
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('fundraising')}>
+                          fundraising
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('pr & marketing')}>
+                          pr & marketing
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('mvp building')}>
+                          mvp building
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('legal & compliance')}>
+                          legal & compliance
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('infrastructure')}>
+                          infrastructure
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('growth')}>
+                          growth
+                        </DropdownItem>
+                      </>
+                    ) : (
+                      // Категории для Abyss
+                      <>
+                        <DropdownItem onClick={() => handleCategoryChange('all')}>
+                          all (9)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('AgriTech')}>
+                          agritech (3)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('AI & ML')}>
+                          ai & ml (1)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('Climate Tech')}>
+                          climate tech (2)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('Cybersecurity')}>
+                          cybersecurity (1)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('Data & Analytics')}>
+                          data & analytics (1)
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleCategoryChange('DeFi')}>
+                          defi (1)
+                        </DropdownItem>
+                      </>
+                    )}
+                  </Dropdown>
+                </div>
+              )}
+            </div>
           </div>
-          
-          {/* Название страницы справа от логотипа */}
-          <div className="relative header-section-title">
-            {shouldShowNavDropdown() ? (
+
+          {/* Кнопка Connect или аватар */}
+          <div className="flex items-center gap-3" suppressHydrationWarning>
+            {isLoading ? (
+              /* Показываем ничего во время загрузки */
+              <div className="w-8 h-8"></div>
+            ) : isAuthenticated ? (
+              /* Аватар с dropdown */
               <div className="relative">
                 <div 
-                  className="flex items-center gap-2 cursor-pointer hover:text-gray-400 transition-colors select-none"
+                  className={`rounded-full cursor-pointer hover:opacity-80 transition-all duration-200 overflow-hidden ${
+                    isDropdownOpen ? 'w-10 h-10' : 'w-8 h-8'
+                  }`}
                   data-dropdown-trigger
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (isNavDropdownOpen) {
-                      setIsNavDropdownOpen(false);
+                    if (isDropdownOpen) {
+                      setIsDropdownOpen(false);
                     } else {
-                      setIsNavDropdownOpen(true);
+                      setIsDropdownOpen(true);
                     }
                   }}
                 >
-                  <span className="text-subheading select-none">
-                    {getPageTitle()}
-                  </span>
-                  <NavArrowDownSolid 
-                    className={`w-4 h-4 transition-transform ${isNavDropdownOpen ? 'rotate-180' : ''}`}
+                  <Image
+                    src={getUserAvatar()}
+                    alt="User Avatar"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover"
                   />
                 </div>
 
-                {/* Навигационный dropdown меню */}
-                <Dropdown 
-                  isOpen={isNavDropdownOpen} 
+                {/* Dropdown меню */}
+                <UserDropdown 
+                  isOpen={isDropdownOpen} 
                   onClose={() => {}}
-                  position="left"
                 >
-                  <DropdownItem onClick={() => handleNavDropdownItemClick('/')}>
-                    abyss
-                  </DropdownItem>
-                  <DropdownItem onClick={() => {
-                    setIsNavDropdownOpen(false);
-                    window.location.href = '/marketplace';
-                  }}>
-                    marketplace
-                  </DropdownItem>
-                </Dropdown>
+                  {renderUserDropdown()}
+                </UserDropdown>
               </div>
             ) : (
-              <div className="flex items-start">
-                <span className="text-subheading">
-                  {getPageTitle()}
-                </span>
+              /* Кнопка Connect с dropdown для неаутентифицированных пользователей */
+              <div className="relative">
+                <div data-dropdown-trigger>
+                  <SecondaryButton
+                    onClick={(e) => {
+                      if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }
+                      if (isConnectDropdownOpen) {
+                        setIsConnectDropdownOpen(false);
+                      } else {
+                        setIsConnectDropdownOpen(true);
+                      }
+                    }}
+                    variant="without-icon"
+                  >
+                    Connect
+                  </SecondaryButton>
+                </div>
+
+                {/* Dropdown для выбора роли */}
+                <UserDropdown 
+                  isOpen={isConnectDropdownOpen} 
+                  onClose={() => {}}
+                >
+                  <UserDropdownItem onClick={() => handleRoleSelect('founder')}>
+                    Founder
+                  </UserDropdownItem>
+                  <UserDropdownItem onClick={() => handleRoleSelect('investor')}>
+                    Investor
+                  </UserDropdownItem>
+                  <UserDropdownItem onClick={() => handleRoleSelect('advisor')}>
+                    Advisor
+                  </UserDropdownItem>
+                </UserDropdown>
               </div>
             )}
           </div>
-
-                  {/* Категории для Marketplace */}
-        {pathname === '/marketplace' && (
-          <div className="relative header-categories">
-              <div 
-                className="flex items-center gap-2 cursor-pointer hover:text-gray-400 transition-colors select-none"
-                data-dropdown-trigger
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (isCategoryDropdownOpen) {
-                    setIsCategoryDropdownOpen(false);
-                  } else {
-                    setIsCategoryDropdownOpen(true);
-                  }
-                }}
-              >
-                <span className="text-subheading select-none">
-                  {selectedCategory}
-                </span>
-                <NavArrowDownSolid 
-                  className={`w-4 h-4 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </div>
-
-              {/* Dropdown категорий */}
-              <Dropdown 
-                isOpen={isCategoryDropdownOpen} 
-                onClose={() => {}}
-                position="left"
-              >
-                <DropdownItem onClick={() => handleCategoryChange('all')}>
-                  all
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('fundraising')}>
-                  fundraising
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('pr & marketing')}>
-                  pr & marketing
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('mvp building')}>
-                  mvp building
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('legal & compliance')}>
-                  legal & compliance
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('infrastructure')}>
-                  infrastructure
-                </DropdownItem>
-                <DropdownItem onClick={() => handleCategoryChange('growth')}>
-                  growth
-                </DropdownItem>
-              </Dropdown>
-            </div>
-          )}
         </div>
-
-
-
-        {/* Кнопка Connect или аватар */}
-        <div className="flex items-center gap-3" suppressHydrationWarning>
-          {isLoading ? (
-            /* Показываем ничего во время загрузки */
-            <div className="w-8 h-8"></div>
-          ) : isAuthenticated ? (
-            /* Аватар с dropdown */
-            <div className="relative">
-              <div 
-                className={`rounded-full cursor-pointer hover:opacity-80 transition-all duration-200 overflow-hidden ${
-                  isDropdownOpen ? 'w-10 h-10' : 'w-8 h-8'
-                }`}
-                data-dropdown-trigger
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (isDropdownOpen) {
-                    setIsDropdownOpen(false);
-                  } else {
-                    setIsDropdownOpen(true);
-                  }
-                }}
-              >
-                <Image
-                  src={getUserAvatar()}
-                  alt="User Avatar"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Dropdown меню */}
-              <UserDropdown 
-                isOpen={isDropdownOpen} 
-                onClose={() => {}}
-              >
-                {renderUserDropdown()}
-              </UserDropdown>
-            </div>
-          ) : (
-            /* Кнопка Connect с dropdown для неаутентифицированных пользователей */
-            <div className="relative">
-              <div data-dropdown-trigger>
-                <SecondaryButton
-                  onClick={(e) => {
-                    if (e) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }
-                    if (isConnectDropdownOpen) {
-                      setIsConnectDropdownOpen(false);
-                    } else {
-                      setIsConnectDropdownOpen(true);
-                    }
-                  }}
-                  variant="without-icon"
-                >
-                  Connect
-                </SecondaryButton>
-              </div>
-
-              {/* Dropdown для выбора роли */}
-              <UserDropdown 
-                isOpen={isConnectDropdownOpen} 
-                onClose={() => {}}
-              >
-                <UserDropdownItem onClick={() => handleRoleSelect('founder')}>
-                  Founder
-                </UserDropdownItem>
-                <UserDropdownItem onClick={() => handleRoleSelect('investor')}>
-                  Investor
-                </UserDropdownItem>
-                <UserDropdownItem onClick={() => handleRoleSelect('advisor')}>
-                  Advisor
-                </UserDropdownItem>
-              </UserDropdown>
-            </div>
-          )}
-        </div>
-              </div>
       </header>
 
       {/* Модалка для ввода имени */}
@@ -522,4 +575,4 @@ export default function Header() {
       />
     </>
   );
-} 
+}

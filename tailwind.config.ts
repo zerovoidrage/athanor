@@ -19,8 +19,8 @@ const config: Config = {
         'semibold': '700',
       },
       fontSize: {
-        'largetitle': ['38px', {
-          lineHeight: '130%',
+        'largetitle': ['42px', {
+          lineHeight: '120%',
           letterSpacing: '-0.01em',
           fontWeight: '400',
         }],

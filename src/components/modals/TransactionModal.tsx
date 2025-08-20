@@ -96,8 +96,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose, tr
   };
 
   return createPortal(
-    (
-      <AnimatePresence>
+    <AnimatePresence>
         <motion.div
           key="backdrop"
           initial={{ opacity: 0 }}
@@ -106,7 +105,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose, tr
           transition={{ duration: 0.15 }}
           className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-md"
           onClick={handleBackdropClick}
-          style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+          style={{ top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999 }}
           data-modal="true"
         />
 
@@ -122,7 +121,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose, tr
             duration: 0.5
           }}
           className="fixed right-0 top-0 w-1/3 h-full p-2"
-          style={{ zIndex: 10000 }}
+          style={{ zIndex: 100000 }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="transaction-modal-title"
@@ -185,8 +184,7 @@ const TransactionModal: React.FC<TransactionModalProps> = ({ isOpen, onClose, tr
             </div>
           </div>
         </motion.div>
-      </AnimatePresence>
-    ),
+      </AnimatePresence>,
     document.body
   );
 };

@@ -14,9 +14,9 @@ export default function ConnectPage() {
     
     // Перенаправляем в зависимости от роли
     switch (role) {
-      case 'founder':
-        router.push('/launchpad');
-        break;
+                      case 'founder':
+          router.push('/launchpad');
+          break;
       case 'investor':
         router.push('/vault');
         break;

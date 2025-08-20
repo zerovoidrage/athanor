@@ -44,7 +44,7 @@ export default function Dropdown({
   
   // Стили дропдауна
   const dropdownStyles = {
-    container: "backdrop-blur-[24px] p-0",
+    container: "p-0",
     item: "block w-full text-left px-0 py-0 text-sm text-white hover:bg-onsurface-900 transition-colors rounded-md"
   };
 

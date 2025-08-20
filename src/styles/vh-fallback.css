@@ -1,0 +1,7 @@
+/* CSS фолбэк для браузеров без svh */
+@supports not (height: 100svh) {
+  .use-vh { 
+    height: 100vh !important; 
+  }
+}
+

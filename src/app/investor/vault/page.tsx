@@ -197,7 +197,7 @@ export default function InvestorDashboardPage() {
                             <img
                               src={t.icon}
                               alt={t.label}
-                              className="w-4 h-4 object-cover rounded"
+                              className="w-4 h-4 object-cover"
                             />
                           )}
                           {t.label}
@@ -259,10 +259,10 @@ export default function InvestorDashboardPage() {
                               <div>Hey</div>
                               <div>{displayName},</div>
                               <div>you've got</div>
-                              <div>$11,000 in play</div>
+                              <div>5 000,43 USDT in play</div>
                             </div>
                             <div className="text-caption text-black font-largetitle" style={{ opacity: 0.5 }}>
-                              Total capital currently invested across all active projects
+                              Capital invested across active projects.
                             </div>
                           </div>
                         </div>
@@ -338,7 +338,7 @@ export default function InvestorDashboardPage() {
                               <img
                                 src="/img/threejs/abyss/icon11.jpg"
                                 alt="Project"
-                                className="w-16 h-16 object-cover rounded lg"
+                                className="w-16 h-16 object-cover"
                                 style={{ objectPosition: 'center' }}
                               />
                               <div className="text-subheading text-white mb-4 mt-8">Museum</div>

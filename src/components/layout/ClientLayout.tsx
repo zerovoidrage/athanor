@@ -6,12 +6,11 @@ import ProgressLine from "@/components/layout/ProgressLine";
 import ContentWrapper from "@/components/layout/ContentWrapper";
 import ServiceModalWrapper from "@/components/modals/ServiceModalWrapper";
 import { MarketplaceProvider } from "@/contexts/MarketplaceContext";
+import { AbyssProvider } from "@/contexts/AbyssContext";
 import { DropdownProvider } from "@/contexts/DropdownContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ServiceModalProvider } from "@/contexts/ServiceModalContext";
 import { TransactionModalProvider } from "@/contexts/TransactionModalContext";
-import { ThreeJSCardModalProvider } from "@/contexts/ThreeJSCardModalContext";
-import ThreeJSCardModal from "@/components/ThreeJSCardModal";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -28,21 +27,20 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
     <AuthProvider>
       <DropdownProvider>
         <MarketplaceProvider>
-          <ServiceModalProvider>
-            <TransactionModalProvider>
-              <ThreeJSCardModalProvider>
+          <AbyssProvider>
+            <ServiceModalProvider>
+              <TransactionModalProvider>
                 <ProgressLine />
                 <Header />
                 <ServiceModalWrapper />
-                <ThreeJSCardModal />
                 <ContentWrapper>
                   <main className="min-h-screen">
                     {children}
                   </main>
                 </ContentWrapper>
-              </ThreeJSCardModalProvider>
-            </TransactionModalProvider>
-          </ServiceModalProvider>
+              </TransactionModalProvider>
+            </ServiceModalProvider>
+          </AbyssProvider>
         </MarketplaceProvider>
       </DropdownProvider>
     </AuthProvider>
