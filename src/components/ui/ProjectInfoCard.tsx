@@ -14,11 +14,12 @@ export default function ProjectInfoCard({ isVisible, projectData, onClose }: Pro
     <AnimatePresence>
       {isVisible && projectData && (
         <motion.div 
-          className="fixed bg-onsurface-900 rounded-md p-4 text-white z-50"
+          className="fixed rounded-md p-4 text-white z-50"
           style={{
             top: '80px',
             right: '16px',
-            width: '300px'
+            width: '300px',
+            backgroundColor: '#1B1B1B'
           }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,8 +27,17 @@ export default function ProjectInfoCard({ isVisible, projectData, onClose }: Pro
           transition={{ duration: 0.2, ease: "easeOut" }}
           data-ui="true"
         >
-          <div className="flex flex-col gap-24">
-            <h3 className="text-body">{projectData.name}</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-onsurface-800 rounded-md flex items-center justify-center overflow-hidden">
+                <img 
+                  src={`/img/threejs/${projectData.imageIndex}.jpg`}
+                  alt={projectData.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-body">{projectData.name}</h3>
+            </div>
             <div className="text-sm text-white-700">
               Project #{projectData.imageIndex}
             </div>
