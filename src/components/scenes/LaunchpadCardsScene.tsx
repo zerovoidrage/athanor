@@ -2,7 +2,8 @@
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import * as THREE from 'three';
-import ProjectInfoCard from '@/components/ui/ProjectInfoCard';
+import LaunchpadProjectInfoCard from '@/components/ui/LaunchpadProjectInfoCard';
+import { useOverlay } from '@/contexts/OverlayContext';
 
 // Ограничиваем количество карточек для launchpad
 const LAUNCHPAD_CARD_COUNT = 2;
@@ -52,6 +53,7 @@ export default function LaunchpadCardsScene() {
   const [cardsVisible, setCardsVisible] = useState(false);
   const cardsVisibleRef = useRef(false);
   const parallaxRef = useRef({ x: 0, y: 0 }); // нормализованные -1..1
+  const { setOverlayOpen } = useOverlay();
 
   const createTextTexture = useCallback((text: string) => {
     const canvas = document.createElement('canvas');
@@ -368,6 +370,7 @@ export default function LaunchpadCardsScene() {
         setSelectedProject(null);
         setShowInfoCard(false);
         cameraLerpTargetRef.current!.set(0, 0, 8);
+        setOverlayOpen(false);
       }
       return;
     }
@@ -381,6 +384,7 @@ export default function LaunchpadCardsScene() {
       setSelectedProject(null);
       setShowInfoCard(false);
       cameraLerpTargetRef.current!.set(0, 0, 8);
+      setOverlayOpen(false);
       return;
     }
 
@@ -394,6 +398,7 @@ export default function LaunchpadCardsScene() {
       imageIndex: (cardRoot as any).userData.imageIndex 
     });
     setShowInfoCard(true);
+    setOverlayOpen(true);
 
     const worldPosition = new THREE.Vector3();
     cardRoot.getWorldPosition(worldPosition);
@@ -428,8 +433,9 @@ export default function LaunchpadCardsScene() {
       setSelectedProject(null);
       setShowInfoCard(false);
       cameraLerpTargetRef.current!.set(0, 0, 8);
+      setOverlayOpen(false);
     }
-  }, []);
+  }, [setOverlayOpen]);
 
   const handleCloseInfoCard = useCallback(() => {
     isZoomedRef.current = false;
@@ -439,7 +445,8 @@ export default function LaunchpadCardsScene() {
     setSelectedProject(null);
     setShowInfoCard(false);
     cameraLerpTargetRef.current!.set(0, 0, 8);
-  }, []);
+    setOverlayOpen(false);
+  }, [setOverlayOpen]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -481,7 +488,7 @@ export default function LaunchpadCardsScene() {
         className="absolute inset-0 w-full h-full"
         style={{ pointerEvents: 'auto' }}
       />
-      <ProjectInfoCard 
+      <LaunchpadProjectInfoCard 
         isVisible={showInfoCard}
         projectData={selectedProject}
         onClose={handleCloseInfoCard}
