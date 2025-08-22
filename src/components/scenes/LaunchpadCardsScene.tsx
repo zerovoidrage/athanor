@@ -3,10 +3,13 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import * as THREE from 'three';
 import LaunchpadProjectInfoCard from '@/components/ui/LaunchpadProjectInfoCard';
+import EvaluationProjectInfoCard from '@/components/ui/EvaluationProjectInfoCard';
+import LowEvaluationProjectInfoCard from '@/components/ui/LowEvaluationProjectInfoCard';
+import LaunchedProjectInfoCard from '@/components/ui/LaunchedProjectInfoCard';
 import { useOverlay } from '@/contexts/OverlayContext';
 
 // Ограничиваем количество карточек для launchpad
-const LAUNCHPAD_CARD_COUNT = 2;
+const LAUNCHPAD_CARD_COUNT = 4;
 
 const imagePaths = [
   '/img/threejs/abyss/icon1.jpg',
@@ -24,12 +27,12 @@ const projectNames = [
   'neuralverse',
   'visionai',
   'cryptoflex',
-  'blockchain',
-  'smartcontract',
   'gamehub',
   'quantumforge',
   'datasphere',
-  'omnibase'
+  'omnibase',
+  'metaverse',
+  'defi'
 ];
 
 export default function LaunchpadCardsScene() {
@@ -100,11 +103,13 @@ export default function LaunchpadCardsScene() {
     const cardGroup = new THREE.Group();
     cardGroup.userData.isCardGroup = true;
     cardGroup.userData.name = projectNames[index % projectNames.length];
-    cardGroup.userData.imageIndex = index + 1;
+    // Для 4-й карточки (index 3) используем другую иконку
+    const imageIndex = index === 3 ? 10 : (index + 1);
+    cardGroup.userData.imageIndex = imageIndex;
 
     const geometry = new THREE.PlaneGeometry(0.7, 0.7);
     const textureLoader = new THREE.TextureLoader();
-    const imagePath = imagePaths[index % imagePaths.length];
+    const imagePath = `/img/threejs/abyss/icon${imageIndex}.jpg`;
     
     const texture = textureLoader.load(
       imagePath,
@@ -212,10 +217,14 @@ export default function LaunchpadCardsScene() {
     const gap = aspect > 1.2 ? 2.2 : 1.6; // пошире на десктопе, уже на мобиле
 
     const cards: THREE.Group[] = [];
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < LAUNCHPAD_CARD_COUNT; i++) {
       const card = createCard(i);
-      const x = (i === 0 ? -gap/2 : gap/2);
-      card.position.set(x, 0, 0);
+      // Располагаем карточки в сетке 2x2
+      const row = Math.floor(i / 2);
+      const col = i % 2;
+      const x = (col === 0 ? -gap/2 : gap/2);
+      const y = (row === 0 ? gap/2 : -gap/2);
+      card.position.set(x, y, 0);
       group.add(card);
       cards.push(card);
     }
@@ -481,6 +490,11 @@ export default function LaunchpadCardsScene() {
 
 
 
+  // Определяем, какую карточку показывать в зависимости от проекта
+  const shouldShowEvaluationCard = selectedProject?.name === 'cryptoflex';
+  const shouldShowLowEvaluationCard = selectedProject?.name === 'gamehub';
+  const shouldShowLaunchedCard = selectedProject?.name === 'neuralverse';
+
   return (
     <>
       <div
@@ -488,11 +502,31 @@ export default function LaunchpadCardsScene() {
         className="absolute inset-0 w-full h-full"
         style={{ pointerEvents: 'auto' }}
       />
-      <LaunchpadProjectInfoCard 
-        isVisible={showInfoCard}
-        projectData={selectedProject}
-        onClose={handleCloseInfoCard}
-      />
+      {shouldShowEvaluationCard ? (
+        <EvaluationProjectInfoCard 
+          isVisible={showInfoCard}
+          projectData={selectedProject}
+          onClose={handleCloseInfoCard}
+        />
+      ) : shouldShowLowEvaluationCard ? (
+        <LowEvaluationProjectInfoCard 
+          isVisible={showInfoCard}
+          projectData={selectedProject}
+          onClose={handleCloseInfoCard}
+        />
+      ) : shouldShowLaunchedCard ? (
+        <LaunchedProjectInfoCard 
+          isVisible={showInfoCard}
+          projectData={selectedProject}
+          onClose={handleCloseInfoCard}
+        />
+      ) : (
+        <LaunchpadProjectInfoCard 
+          isVisible={showInfoCard}
+          projectData={selectedProject}
+          onClose={handleCloseInfoCard}
+        />
+      )}
     </>
   );
 }

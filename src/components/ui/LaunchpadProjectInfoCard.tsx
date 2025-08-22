@@ -18,7 +18,9 @@ const getProjectDescription = (projectName: string): string => {
     'gamehub': 'Decentralized gaming ecosystem and marketplace',
     'neuralverse': 'AI-powered virtual worlds and metaverse platform',
     'visionai': 'Computer vision solutions for blockchain security',
-    'cryptoflex': 'Flexible cryptocurrency management and trading platform'
+    'cryptoflex': 'Flexible cryptocurrency management and trading platform',
+    'metaverse': 'Next-generation metaverse platform with AI integration',
+    'defi': 'Decentralized finance protocol for yield farming and lending'
   };
   return descriptions[projectName] || 'Innovative blockchain solution for the future';
 };
@@ -34,7 +36,10 @@ const getProjectData = (projectName: string) => {
     'gamehub': { category: 'GameFi', stage: 'Idea', status: 'draft' },
     'neuralverse': { category: 'AI & ML', stage: 'Beta', status: 'draft' },
     'visionai': { category: 'Cybersecurity', stage: 'MVP', status: 'draft' },
-    'cryptoflex': { category: 'FinTech', stage: 'Production', status: 'draft' }
+    'cryptoflex': { category: 'FinTech', stage: 'Production', status: 'draft' },
+    'gamehub': { category: 'GameFi', stage: 'Beta', status: 'draft' },
+    'metaverse': { category: 'Metaverse', stage: 'Alpha', status: 'draft' },
+    'defi': { category: 'DeFi', stage: 'Idea', status: 'draft' }
   };
   return projectData[projectName] || { category: 'Other', stage: 'Idea', status: 'draft' };
 };
@@ -96,23 +101,19 @@ export default function LaunchpadProjectInfoCard({ isVisible, projectData, onClo
                   <span className="text-small text-white-900">{getProjectData(projectData.name).category}</span>
                 </div>
                 <div className="flex gap-0">
-                  <span className="text-small text-white-700 w-[100px]">Stage:</span>
-                  <span className="text-small text-white-900">{getProjectData(projectData.name).stage}</span>
-                </div>
-                <div className="flex gap-0">
                   <span className="text-small text-white-700 w-[100px]">Status:</span>
                   <span className="text-small" style={{ color: '#F0CCA6' }}>{getProjectData(projectData.name).status}</span>
                 </div>
               </div>
               
-              {/* Кнопка */}
+              {/* Кнопка Complete draft */}
               <div className="pt-4">
                 {isAuthenticated ? (
                   <PrimaryButton 
-                    onClick={() => console.log('Manage project:', projectData.name)}
+                    onClick={() => console.log('Complete draft project:', projectData.name)}
                     className="w-full flex items-center justify-between"
                   >
-                    <span>manage</span>
+                    <span>Complete draft</span>
                     <ArrowRight className="w-4 h-4" />
                   </PrimaryButton>
                 ) : (
@@ -123,6 +124,25 @@ export default function LaunchpadProjectInfoCard({ isVisible, projectData, onClo
                     <span>connect to manage project</span>
                     <ArrowRight className="w-4 h-4" />
                   </PrimaryButton>
+                )}
+              </div>
+              
+              {/* Кнопка Delete */}
+              <div className="pt-2">
+                {isAuthenticated ? (
+                  <button 
+                    onClick={() => console.log('Delete project:', projectData.name)}
+                    className="block w-full text-left px-0 py-2 text-sm text-white hover:bg-onsurface-900 hover:px-3 transition-all duration-200 rounded-md"
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <button 
+                    disabled
+                    className="block w-full text-left px-0 py-2 text-sm text-white-700 opacity-50 cursor-not-allowed"
+                  >
+                    Delete
+                  </button>
                 )}
               </div>
             </div>
