@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
-type UserRole = 'founder' | 'investor' | 'advisor' | null;
+type UserRole = 'founder' | 'investor' | 'advisor' | 'clean-investor' | null;
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -11,6 +11,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (role: UserRole) => void;
   setDisplayName: (name: string) => void;
+  updateUserRole: (role: UserRole) => void;
   logout: () => void;
 }
 
@@ -69,6 +70,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('athanor_auth', JSON.stringify(authData));
   };
 
+  const updateUserRole = (role: UserRole) => {
+    setUserRole(role);
+    
+    // Обновляем localStorage
+    const authData = {
+      isAuthenticated,
+      userRole: role,
+      displayName
+    };
+    localStorage.setItem('athanor_auth', JSON.stringify(authData));
+    
+    // Обновляем cookie для middleware
+    document.cookie = `userRole=${role}; path=/; max-age=86400`; // 24 часа
+  };
+
   // Обновляем localStorage при изменении состояния аутентификации
   useEffect(() => {
     if (isAuthenticated && userRole) {
@@ -101,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       login, 
       setDisplayName: updateDisplayName,
+      updateUserRole,
       logout 
     }}>
       {children}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import ProgressLine from "@/components/layout/ProgressLine";
 import ContentWrapper from "@/components/layout/ContentWrapper";
@@ -18,6 +19,9 @@ interface ClientLayoutProps {
 }
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
+  const pathname = usePathname();
+  const isIssueCardPage = pathname === '/issue-card';
+
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
@@ -27,22 +31,22 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   return (
     <AuthProvider>
       <DropdownProvider>
-                            <MarketplaceProvider>
-                      <AbyssProvider>
-                        <ServiceModalProvider>
-                          <TransactionModalProvider>
-                            <ProgressLine />
-                            <Header />
-                            <ServiceModalWrapper />
-                            <ContentWrapper>
-                              <main className="min-h-screen">
-                                {children}
-                              </main>
-                            </ContentWrapper>
-                          </TransactionModalProvider>
-                        </ServiceModalProvider>
-                      </AbyssProvider>
-                    </MarketplaceProvider>
+        <MarketplaceProvider>
+          <AbyssProvider>
+            <ServiceModalProvider>
+              <TransactionModalProvider>
+                {!isIssueCardPage && <ProgressLine />}
+                {!isIssueCardPage && <Header />}
+                <ServiceModalWrapper />
+                <ContentWrapper>
+                  <main className="min-h-screen">
+                    {children}
+                  </main>
+                </ContentWrapper>
+              </TransactionModalProvider>
+            </ServiceModalProvider>
+          </AbyssProvider>
+        </MarketplaceProvider>
       </DropdownProvider>
     </AuthProvider>
   );

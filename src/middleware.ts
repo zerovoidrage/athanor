@@ -13,6 +13,8 @@ export function middleware(request: NextRequest) {
     
     if (userRole === 'investor') {
       destination = '/investor/profile';
+    } else if (userRole === 'clean-investor') {
+      destination = '/clean-investor/profile';
     } else if (userRole === 'advisor') {
       destination = '/advisor/profile';
     }

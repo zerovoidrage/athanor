@@ -9,16 +9,19 @@ export default function ConnectPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const handleRoleSelect = (role: 'founder' | 'investor' | 'advisor') => {
+  const handleRoleSelect = (role: 'founder' | 'investor' | 'advisor' | 'clean-investor') => {
     login(role);
     
     // Перенаправляем в зависимости от роли
     switch (role) {
-                      case 'founder':
-          router.push('/launchpad');
-          break;
+      case 'founder':
+        router.push('/launchpad');
+        break;
       case 'investor':
         router.push('/vault');
+        break;
+      case 'clean-investor':
+        router.push('/clean');
         break;
       case 'advisor':
         router.push('/services');
@@ -78,6 +81,18 @@ export default function ConnectPage() {
               <h2 className="text-heading text-white mb-2">Investor</h2>
               <p className="text-subheading text-white-800">
                 Discover and invest in promising startups
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="bg-onsurface-900 rounded-lg p-6 cursor-pointer hover:bg-onsurface-800 transition-colors"
+              onClick={() => handleRoleSelect('clean-investor')}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <h2 className="text-heading text-white mb-2">Clean Investor</h2>
+              <p className="text-subheading text-white-800">
+                Invest in curated projects without museum section
               </p>
             </motion.div>
 

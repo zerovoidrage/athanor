@@ -22,7 +22,7 @@ export default function Header() {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isConnectDropdownOpen, setIsConnectDropdownOpen] = useState(false);
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
-  const [pendingRole, setPendingRole] = useState<'founder' | 'investor' | 'advisor' | null>(null);
+  const [pendingRole, setPendingRole] = useState<'founder' | 'investor' | 'advisor' | 'clean-investor' | null>(null);
   const { selectedCategory, setSelectedCategory } = useMarketplace();
   const { setIsAnyDropdownOpen } = useDropdown();
 
@@ -103,7 +103,7 @@ export default function Header() {
     router.push('/');
   };
 
-  const handleRoleSelect = (role: 'founder' | 'investor' | 'advisor') => {
+  const handleRoleSelect = (role: 'founder' | 'investor' | 'advisor' | 'clean-investor') => {
     setIsConnectDropdownOpen(false);
     setPendingRole(role);
     setIsNameModalOpen(true);
@@ -124,6 +124,9 @@ export default function Header() {
         case 'investor':
           router.push('/vault');
           break;
+        case 'clean-investor':
+          router.push('/clean');
+          break;
         case 'advisor':
           router.push('/services');
           break;
@@ -141,6 +144,8 @@ export default function Header() {
     switch (userRole) {
       case 'investor':
         return '/avatar2.jpg';
+      case 'clean-investor':
+        return '/avatar2.jpg'; // используем тот же аватар что и для investor
       case 'advisor':
         return '/avatar3.jpg';
       default:
@@ -165,9 +170,11 @@ export default function Header() {
         return 'referral';
       case '/connect':
         return 'connect';
-              case '/vault':
+      case '/vault':
         return 'vault';
-              case '/services':
+      case '/clean':
+        return 'vault';
+      case '/services':
         return 'advisor services';
       default:
         return 'abyss';
@@ -251,6 +258,27 @@ export default function Header() {
           
           <UserDropdownItem onClick={() => handleDropdownItemClick('/services')}>
             Services
+          </UserDropdownItem>
+          
+          {/* Разделитель */}
+          <div className="border-t border-gray-700"></div>
+          
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/profile')}>
+            Profile
+          </UserDropdownItem>
+          <UserDropdownItem onClick={() => handleLogout()}>
+            Logout
+          </UserDropdownItem>
+        </>
+      );
+    } else if (userRole === 'clean-investor') {
+      return (
+        <>
+          {/* Имя пользователя */}
+          <UserDisplayName displayName={displayName} />
+          
+          <UserDropdownItem onClick={() => handleDropdownItemClick('/clean')}>
+            Vault
           </UserDropdownItem>
           
           {/* Разделитель */}
@@ -488,6 +516,9 @@ export default function Header() {
                 </UserDropdownItem>
                 <UserDropdownItem onClick={() => handleRoleSelect('investor')}>
                   Investor
+                </UserDropdownItem>
+                <UserDropdownItem onClick={() => handleRoleSelect('clean-investor')}>
+                  Clean Investor
                 </UserDropdownItem>
                 <UserDropdownItem onClick={() => handleRoleSelect('advisor')}>
                   Advisor

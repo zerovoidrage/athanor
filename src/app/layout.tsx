@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Abyss | Athanor",
   description: "Athanor application",
   icons: {
-    icon: '/avatar.png', // или любое другое изображение из public/
+    icon: '/avatar.png',
     shortcut: '/avatar.png',
     apple: '/avatar.png',
   },
@@ -22,6 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link
+          rel="preload"
+          href="/fonts/SuisseIntl-Light.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <link
           rel="preload"
           href="/fonts/SuisseIntl-Regular.woff2"
@@ -50,15 +57,9 @@ export default function RootLayout({
           type="font/woff2"
           crossOrigin="anonymous"
         />
-        <link
-          rel="preload"
-          href="/fonts/SuisseIntl-Light.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+
       </head>
-      <body className="antialiased bg-black text-white min-h-screen">
+      <body className="antialiased bg-black text-white min-h-screen font-sans">
         <OverlayProvider>
           <ClientLayout>
             {children}
