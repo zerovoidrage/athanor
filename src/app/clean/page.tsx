@@ -467,133 +467,13 @@ export default function CleanInvestorPage() {
                           </p>
                         </div>
                         <div className="flex-1">
-                          <div className="bg-onsurface-900 rounded-lg p-1 space-y-0">
-                            {/* Транзакция 2 - Возврат */}
-                            <div 
-                              className={transactionItemStyles.container}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.paddingLeft = '20px';
-                                e.currentTarget.style.paddingRight = '20px';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.paddingLeft = '16px';
-                                e.currentTarget.style.paddingRight = '16px';
-                              }}
-                              onClick={() => handleTransactionClick({
-                                id: 2,
-                                type: 'return',
-                                projectName: 'Clean Project',
-                                amount: '+3 200,00 USDT',
-                                status: 'Completed',
-                                date: '1 day ago',
-                                projectImage: '/img/threejs/abyss/icon2.jpg'
-                              })}
-                            >
-                              {/* Иконка транзакции */}
-                              <div className="w-12 h-12 bg-onsurface-900 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-onsurface-700">
-                                {getTransactionIcon('return', 'Return from Clean Project')}
+                          <div className="bg-onsurface-900 rounded-lg p-8 flex items-center justify-center">
+                            <div className="text-center">
+                              <div className="text-white-700 text-caption mb-2">
+                                No transactions yet
                               </div>
-
-                              {/* Описание транзакции */}
-                              <div className={transactionItemStyles.descriptionContainer}>
-                                <div>
-                                  <h3 className={transactionItemStyles.title}>
-                                    Return from Clean Project
-                                  </h3>
-                                  <div className={transactionItemStyles.date}>1 day ago</div>
-                                </div>
-                              </div>
-
-                              {/* Сумма и статус */}
-                              <div className={transactionItemStyles.amountContainer}>
-                                <div className={transactionItemStyles.amount.return}>+3 200,00 USDT</div>
-                                <div className={transactionItemStyles.status}>Completed</div>
-                              </div>
-                            </div>
-
-                            {/* Транзакция 3 - Дивиденды */}
-                            <div 
-                              className={transactionItemStyles.container}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.paddingLeft = '20px';
-                                e.currentTarget.style.paddingRight = '20px';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.paddingLeft = '16px';
-                                e.currentTarget.style.paddingRight = '16px';
-                              }}
-                              onClick={() => handleTransactionClick({
-                                id: 3,
-                                type: 'dividends',
-                                projectName: 'Clean Project',
-                                amount: '+420,00 USDT',
-                                status: 'Completed',
-                                date: '3 hours ago',
-                                projectImage: '/img/threejs/abyss/icon2.jpg'
-                              })}
-                            >
-                              {/* Иконка транзакции */}
-                              <div className="w-12 h-12 bg-onsurface-900 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-onsurface-700">
-                                {getTransactionIcon('dividends', 'Dividends from Clean Project')}
-                              </div>
-
-                              {/* Описание транзакции */}
-                              <div className={transactionItemStyles.descriptionContainer}>
-                                <div>
-                                  <h3 className={transactionItemStyles.title}>
-                                    Dividends from Clean Project
-                                  </h3>
-                                  <div className={transactionItemStyles.date}>3 hours ago</div>
-                                </div>
-                              </div>
-
-                              {/* Сумма и статус */}
-                              <div className={transactionItemStyles.amountContainer}>
-                                <div className={transactionItemStyles.amount.dividends}>+420,00 USDT</div>
-                                <div className={transactionItemStyles.status}>Completed</div>
-                              </div>
-                            </div>
-
-                            {/* Транзакция 3 - Инвестиция */}
-                            <div 
-                              className={transactionItemStyles.container}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.paddingLeft = '20px';
-                                e.currentTarget.style.paddingRight = '20px';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.paddingLeft = '16px';
-                                e.currentTarget.style.paddingRight = '16px';
-                              }}
-                              onClick={() => handleTransactionClick({
-                                id: 1,
-                                type: 'investment',
-                                projectName: 'Clean Project',
-                                amount: '-5 000,00 USDT',
-                                status: 'Completed',
-                                date: '2 days ago',
-                                projectImage: '/img/threejs/abyss/icon2.jpg'
-                              })}
-                            >
-                              {/* Иконка транзакции */}
-                              <div className="w-12 h-12 bg-onsurface-900 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-onsurface-700">
-                                {getTransactionIcon('investment', 'Investment in Clean Project')}
-                              </div>
-
-                              {/* Описание транзакции */}
-                              <div className={transactionItemStyles.descriptionContainer}>
-                                <div>
-                                  <h3 className={transactionItemStyles.title}>
-                                    Investment in Clean Project
-                                  </h3>
-                                  <div className={transactionItemStyles.date}>2 days ago</div>
-                                </div>
-                              </div>
-
-                              {/* Сумма и статус */}
-                              <div className={transactionItemStyles.amountContainer}>
-                                <div className={transactionItemStyles.amount.investment}>-5 000,00 USDT</div>
-                                <div className={transactionItemStyles.status}>Completed</div>
+                              <div className="text-white-500 text-small">
+                                Your transaction history will appear here once you start investing
                               </div>
                             </div>
                           </div>
